@@ -11,7 +11,7 @@ import java.util.Collection;
 
 
 @Entity
-@Table(name = "Users")
+@Table(name = "User")
 public class User {
 
     @Id
@@ -23,7 +23,7 @@ public class User {
     private int userAge;
 
 
-    @OneToMany(mappedBy = "Users")
+    @OneToMany(mappedBy = "User")
     private Collection<Dog> dogs;
     public Collection<Dog> getDogs() {
         return dogs;

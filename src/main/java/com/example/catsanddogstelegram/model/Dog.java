@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 
 @org.hibernate.annotations.Entity
-@Table(name = "dogs")
+@Table(name = "Dog")
 public class Dog extends Animals{
 
     @ManyToOne(cascade = CascadeType.ALL)

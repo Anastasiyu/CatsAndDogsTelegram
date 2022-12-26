@@ -1,8 +1,6 @@
 package com.example.catsanddogstelegram.service;
 
-import com.example.catsanddogstelegram.model.User;
-import com.example.catsanddogstelegram.repository.DogRepository;
-import com.example.catsanddogstelegram.repository.UserRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,24 +10,22 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
+
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import java.sql.Timestamp;
+
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @PropertySource("application.properties")
 @Component
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
     private final Logger log = LoggerFactory.getLogger(TelegramBotService.class);
-    private final UserRepository userRepository;
-    private final DogRepository dogRepository;
 
     private final String botName;
     private final String botToken;
@@ -50,12 +46,10 @@ public class TelegramBotService extends TelegramLongPollingBot {
     static final String ADDRESS_TEXT = "Наш адрес: ул. Ленина, дом 123 ";
     static final String ERROR_TEXT = "Error occurred: ";
 
-    public TelegramBotService(UserRepository userRepository,
-
-                              DogRepository dogRepository,
+    public TelegramBotService(
                               @Value("${telegrem.bot.name}") String botName,
                               @Value("${telegram.bot.token}") String botToken) {
-        this.dogRepository = dogRepository;
+
         this.botName = botName;
         this.botToken = botToken;
 
@@ -73,7 +67,6 @@ public class TelegramBotService extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Ошибка настройки списка команд бота: " + e.getMessage());
         }
-        this.userRepository = userRepository;
 
     }
 
@@ -120,7 +113,6 @@ public class TelegramBotService extends TelegramLongPollingBot {
 
                 case "/register":
 
-                    registerUser(update.getMessage());
                     break;
 
                 default:
@@ -138,24 +130,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         sendMessage(chatId, answer);
     }
 
-    //регистрация User
-    private void registerUser(Message msg) {
 
-        if(userRepository.findById(msg.getChatId()).isEmpty()){
-
-            var chatId = msg.getChatId();
-            var chat = msg.getChat();
-
-            User user = new User();
-
-            user.setChatId(chatId);
-            user.setUserName(chat.getUserName());
-            user.setRegisteredAt(new Timestamp(System.currentTimeMillis()));
-
-            userRepository.save(user);
-            log.info("user saved: " + user);
-        }
-    }
 
     // метод отправить сообщение
     private void sendMessage(long chatId, String textToSend) {
@@ -170,13 +145,6 @@ public class TelegramBotService extends TelegramLongPollingBot {
         }
     }
 
-
-    public Collection<User> findAllByChatId(Long chatId) {
-        log.debug("Method findAllByChatId was invoked");
-        return userRepository.findAllByChatId(chatId).stream()
-                .filter(user -> user.getChatId() == chatId)
-                .collect(Collectors.toList());
-    }
 
 
 
