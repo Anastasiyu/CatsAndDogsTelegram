@@ -1,5 +1,6 @@
-package com.example.catsanddogstelegram.model;
+package com.example.catsanddogstelegram.entity;
 
+import com.example.catsanddogstelegram.entity.Dog;
 import org.hibernate.annotations.Entity;
 
 import javax.persistence.Id;

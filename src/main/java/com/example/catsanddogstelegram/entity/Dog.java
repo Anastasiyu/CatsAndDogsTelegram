@@ -1,5 +1,7 @@
-package com.example.catsanddogstelegram.model;
+package com.example.catsanddogstelegram.entity;
 
+
+import com.example.catsanddogstelegram.model.Animals;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -7,7 +9,7 @@ import java.text.SimpleDateFormat;
 
 @org.hibernate.annotations.Entity
 @Table(name = "Dog")
-public class Dog extends Animals{
+public class Dog extends Animals {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chatId")
