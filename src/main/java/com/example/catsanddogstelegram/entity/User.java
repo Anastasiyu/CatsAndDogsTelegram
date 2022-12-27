@@ -9,59 +9,7 @@ import java.util.Collection;
 
 
 @Entity
-<<<<<<< HEAD
-@Table(name = "User")
-public class User {
 
-    @Id
-    private Long chatId;
-
-    private Timestamp userTime; // переменная время регистрации
-    private String userName;
-
-    private int userAge;
-
-
-    @OneToMany(mappedBy = "User")
-    private Collection<Dog> dogs;
-    public Collection<Dog> getDogs() {
-        return dogs;
-    }
-
-    public void setDogs(Collection<Dog> students) {
-        this.dogs = dogs;
-    }
-
-    public int getAge() {
-        return userAge;
-    }
-
-    public void setAge(int age) {
-        this.userAge = age;
-    }
-
-    public Long getChatId() {
-        return chatId;
-    }
-
-
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Timestamp getRegisteredAt() {
-        return userTime;
-    }
-
-    public void setRegisteredAt(Timestamp registeredAt) {
-        this.userTime = registeredAt;
-    }
-=======
 @Table(name = "users")
 @Data
 public class User {
@@ -75,18 +23,19 @@ public class User {
     @Column(name = "user_age")
     private int userAge;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "users")
     private Collection<Dog> animals;
->>>>>>> dev
+
 
     @Override
     public String toString() {
         return "Пользователь" +
                 "  " + chatId + " " + userAge +
-                " "  + userName +
+                " " + userName +
                 "/ " + userTime;
     }
 
-    public void setChatId(Long chatId) { this.chatId = chatId;
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 }

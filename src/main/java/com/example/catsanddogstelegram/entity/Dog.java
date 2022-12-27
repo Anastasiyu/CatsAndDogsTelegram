@@ -1,5 +1,6 @@
 package com.example.catsanddogstelegram.entity;
 
+import com.example.catsanddogstelegram.model.Animal;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class Dog extends Animal{
+public class Dog extends Animal {
 
     @Override
     public int hashCode() {
