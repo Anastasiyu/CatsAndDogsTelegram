@@ -9,7 +9,6 @@ import java.util.Collection;
 
 
 @Entity
-
 @Table(name = "users")
 @Data
 public class User {
@@ -23,19 +22,17 @@ public class User {
     @Column(name = "user_age")
     private int userAge;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private Collection<Dog> animals;
-
 
     @Override
     public String toString() {
         return "Пользователь" +
                 "  " + chatId + " " + userAge +
-                " " + userName +
+                " "  + userName +
                 "/ " + userTime;
     }
 
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
+    public void setChatId(Long chatId) { this.chatId = chatId;
     }
 }

@@ -1,6 +1,6 @@
-package com.example.catsanddogstelegram.model;
+package com.example.catsanddogstelegram.entity;
 
-import com.example.catsanddogstelegram.entity.User;
+
 import lombok.Data;
 
 import javax.persistence.*;
