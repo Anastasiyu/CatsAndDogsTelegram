@@ -1,2 +1,1 @@
-<<<<<<< HEAD
 -- liquibase formatted sql

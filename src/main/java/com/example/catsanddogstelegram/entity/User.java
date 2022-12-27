@@ -1,17 +1,15 @@
 package com.example.catsanddogstelegram.entity;
 
-import com.example.catsanddogstelegram.entity.Dog;
-import org.hibernate.annotations.Entity;
+import lombok.Data;
 
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 
 
 @Entity
+<<<<<<< HEAD
 @Table(name = "User")
 public class User {
 
@@ -63,6 +61,23 @@ public class User {
     public void setRegisteredAt(Timestamp registeredAt) {
         this.userTime = registeredAt;
     }
+=======
+@Table(name = "users")
+@Data
+public class User {
+    @Id
+    @Column(name = "chat_id")
+    private Long chatId;
+    @Column(name = "user_time")
+    private Timestamp userTime;
+    @Column(name = "user_name")
+    private String userName;
+    @Column(name = "user_age")
+    private int userAge;
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Dog> animals;
+>>>>>>> dev
 
     @Override
     public String toString() {
