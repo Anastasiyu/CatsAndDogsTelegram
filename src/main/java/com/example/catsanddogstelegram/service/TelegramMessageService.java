@@ -45,7 +45,6 @@ public class TelegramMessageService{
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
-
     public void helpCommandReceived(long chatId) {
         log.debug("method helpCommandReceived started");
         sendMessage(chatId, HELP_TEXT);
@@ -55,7 +54,6 @@ public class TelegramMessageService{
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
-
     public void addressCommandReceived(long chatId) {
         log.debug("method addressCommandReceived started");
         sendMessage(chatId, ADDRESS_TEXT);
@@ -65,12 +63,15 @@ public class TelegramMessageService{
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
-
     public void timeCommandReceived(long chatId) {
         log.debug("method timeCommandReceived started");
         sendMessage(chatId, TIME_TEXT);
     }
 
+    /**Вывод константного меню DEFAULT_TEXT при запросе несуществующей команды
+     *
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     */
     public void defaultCommandReceived(long chatId) {
         log.debug("method timeCommandReceived started");
         sendMessage(chatId, DEFAULT_TEXT);
