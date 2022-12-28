@@ -4,6 +4,7 @@ import com.example.catsanddogstelegram.entity.User;
 import com.example.catsanddogstelegram.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,12 +32,11 @@ public class UserController {
                             description = "Найденные пользователи",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = User.class)
+                                    array = @ArraySchema(schema = @Schema(implementation = User.class))
                             )
                     )
             }, tags = "User"
     )
-
     @GetMapping
     public ResponseEntity<List<User>> findUserByName(@Parameter(description = "Имя", example = "Иван")
                                                      @RequestParam String userName) {
