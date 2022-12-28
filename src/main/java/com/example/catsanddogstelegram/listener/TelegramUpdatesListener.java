@@ -27,6 +27,11 @@ public class TelegramUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**Основной метод библиотеки {@link UpdatesListener} который проверяет (слушает) нет ли команд от пользователя
+     * в этом методе реализуется структура запросов и ответов бота
+     * @param updates параметр библиотеки {@link UpdatesListener} принимающий обновления команд от пользователя
+     * @return возвращает полученную по запросу строку ответа в соответствующий чат
+     */
     @Override
     public int process(List<Update> updates) {
         log.debug("method process started");
@@ -56,6 +61,11 @@ public class TelegramUpdatesListener implements UpdatesListener {
         return com.pengrad.telegrambot.UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
+    /**Метод для отправки сообщений ботом
+     * метод создает новую строку и определяя по chatId отправляет сообщение пользователю
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * @param textToSend сформированный текст для отправки пользователю
+     */
     private void sendMessage(long chatId, String textToSend) {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);
