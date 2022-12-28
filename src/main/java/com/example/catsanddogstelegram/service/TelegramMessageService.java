@@ -25,6 +25,7 @@ public class TelegramMessageService{
             + "Введите /help чтобы снова увидеть это сообщение";
     private final String TIME_TEXT = "Время работы приюта: пн-пт с 8-00 до 19-00, сб-вс с 10-00 до 15-00 ";
     private final String ADDRESS_TEXT = "Наш адрес: ул. Ленина, дом 123 ";
+    private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!\nCписок команд /info";
     private final String ERROR_TEXT = "Error occurred: ";
 
     //нужно написать приветственное сообщение с рассказом о себе
@@ -48,6 +49,11 @@ public class TelegramMessageService{
     public void timeCommandReceived(long chatId) {
         log.debug("method timeCommandReceived started");
         sendMessage(chatId, TIME_TEXT);
+    }
+
+    public void defaultCommandReceived(long chatId) {
+        log.debug("method timeCommandReceived started");
+        sendMessage(chatId, DEFAULT_TEXT);
     }
 
     private void sendMessage(long chatId, String textToSend) {

@@ -18,7 +18,7 @@ public abstract class Animal {
     @Column(name = "register_date")
     private Timestamp registerDate;
     @Column(name = "animal_gender")
-    private Boolean gender;
+    private Boolean isMale;
     @Column(name = "animal_name")
     private String animalName;
     @Column(name = "animal_age")
@@ -47,7 +47,7 @@ public abstract class Animal {
         return "Animal{" +
                 "animalId=" + animalId +
                 ", registerDate=" + registerDate +
-                ", gender=" + gender +
+                ", gender=" + isMale +
                 ", animalName='" + animalName + '\'' +
                 ", animalAge=" + animalAge +
                 ", description='" + description + '\'' +
