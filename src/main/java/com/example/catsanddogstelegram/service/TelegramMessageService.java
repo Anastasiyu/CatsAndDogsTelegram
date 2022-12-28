@@ -27,29 +27,54 @@ public class TelegramMessageService{
     private final String ADDRESS_TEXT = "Наш адрес: ул. Ленина, дом 123 ";
     private final String ERROR_TEXT = "Error occurred: ";
 
+    /**Вывод приветственного сообщения с именем пользователя
+     *
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * @param name имя пользователя который бот берет из телеграмм чата
+     */
     //нужно написать приветственное сообщение с рассказом о себе
     public void startCommandReceived(long chatId, String name) {
         log.debug("method startCommandReceived started");
         String answer = "Привет " + name + ", рад помочь Вам!";
-        log.info("Ответил пользователю ");
+        log.info("Ответил пользователю " + name);
         sendMessage(chatId, answer);
     }
+
+    /**Вывод константного меню HELP_TEXT для ознакомления пользователя с возможными командами бота
+     *
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     */
 
     public void helpCommandReceived(long chatId) {
         log.debug("method helpCommandReceived started");
         sendMessage(chatId, HELP_TEXT);
     }
 
+    /**Вывод константного меню ADDRESS_TEXT для ознакомления пользователя с адресом приюта
+     *
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     */
+
     public void addressCommandReceived(long chatId) {
         log.debug("method addressCommandReceived started");
         sendMessage(chatId, ADDRESS_TEXT);
     }
+
+    /**Вывод константного меню TIME_TEXT для ознакомления пользователя с графиком работы приюта
+     *
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     */
 
     public void timeCommandReceived(long chatId) {
         log.debug("method timeCommandReceived started");
         sendMessage(chatId, TIME_TEXT);
     }
 
+    /**Метод для отправки сообщений ботом
+     * метод создает новую строку и определяя по chatId отправляет сообщение пользователю
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * @param textToSend сформированный текст для отправки пользователю
+     */
     private void sendMessage(long chatId, String textToSend) {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);

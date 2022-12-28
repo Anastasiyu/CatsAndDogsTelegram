@@ -9,9 +9,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TelegramBotConfiguration {
+    /**поле token
+     * аннотация {@Value} с указанием названия параметра telegram.bot.token
+     * указывает где находиться данный параметр (application.properties)
+     */
     @Value("${telegram.bot.token}")
     private String token;
 
+    /**Метод вывода константных запросов в поле телеграмм
+     * Принимает {@Value token} бота и с помощью команды execute (исполнять) создает активные команды в поле меню телеграмм бота
+     * @return возвращает список команд
+     */
     @Bean
     public TelegramBot telegramBot(){
         TelegramBot telegramBot = new TelegramBot(token);
