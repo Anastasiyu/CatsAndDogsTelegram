@@ -1,6 +1,5 @@
 package com.example.catsanddogstelegram.entity;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -35,7 +34,7 @@ public abstract class Animal {
 
     /** Поле пол живатного */
     @Column(name = "animal_gender")
-    private Boolean gender;
+    private Boolean isMale;
 
     /** Поле имя животного */
     @Column(name = "animal_name")
@@ -72,7 +71,7 @@ public abstract class Animal {
         return "Animal{" +
                 "animalId=" + animalId +
                 ", registerDate=" + registerDate +
-                ", gender=" + gender +
+                ", gender=" + isMale +
                 ", animalName='" + animalName + '\'' +
                 ", animalAge=" + animalAge +
                 ", description='" + description + '\'' +

@@ -37,7 +37,7 @@ public class User {
 
     /**Метод БД определяющий зависимость у одного пользователя много животных*/
     @OneToMany(mappedBy = "user")
-    private Collection<Dog> animals;
+    private Collection<Animal> animals;
 
     @Override
     public String toString() {
@@ -45,8 +45,5 @@ public class User {
                 "  " + chatId + " " + userAge +
                 " "  + userName +
                 "/ " + userTime;
-    }
-
-    public void setChatId(Long chatId) { this.chatId = chatId;
     }
 }

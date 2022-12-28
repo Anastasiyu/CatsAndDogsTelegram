@@ -4,8 +4,6 @@ import com.example.catsanddogstelegram.service.TelegramMessageService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,9 +35,14 @@ public class TelegramUpdatesListener implements UpdatesListener {
         log.debug("method process started");
         updates.forEach(update -> {
             log.info("Processing update: {}", update);
-            String message = update.message().text();
-            long chatId = update.message().chat().id();
-            switch (message) {
+            if(update.message() != null) {
+                if (update.message().text() == null || update.message().chat() == null) {
+                    log.debug("received message without any text or chat info: {}", update);
+                    return;
+                }
+                String message = update.message().text();
+                long chatId = update.message().chat().id();
+                switch (message) {
                     case "/start":
                         telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
                         break;
@@ -55,23 +58,10 @@ public class TelegramUpdatesListener implements UpdatesListener {
                     case "/register":
                         break;
                     default:
-                        sendMessage(chatId, "Извините, данная команда не поддерживается!");
+                        telegramMessageService.defaultCommandReceived(chatId);
                 }
+            }
         });
         return com.pengrad.telegrambot.UpdatesListener.CONFIRMED_UPDATES_ALL;
-    }
-
-    /**Метод для отправки сообщений ботом
-     * метод создает новую строку и определяя по chatId отправляет сообщение пользователю
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     * @param textToSend сформированный текст для отправки пользователю
-     */
-    private void sendMessage(long chatId, String textToSend) {
-        log.debug("method sendMessage started");
-        SendMessage message = new SendMessage(chatId, textToSend);
-        SendResponse response = telegramBot.execute(message);
-        if(!response.isOk()){
-            log.error("message was not send: {}", response.errorCode());
-        }
     }
 }
