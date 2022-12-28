@@ -35,23 +35,23 @@ public class TelegramUpdatesListener implements UpdatesListener {
             String message = update.message().text();
             long chatId = update.message().chat().id();
             switch (message) {
-                case "/start":
-                    telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
-                    break;
-                case "/time":
-                    telegramMessageService.timeCommandReceived(chatId);
-                    break;
-                case "/address":
-                    telegramMessageService.addressCommandReceived(chatId);
-                    break;
-                case "/help":
-                    telegramMessageService.helpCommandReceived(chatId);
-                    break;
-                case "/register":
-                    break;
-                default:
-                    sendMessage(chatId, "Извините, данная команда не поддерживается!");
-            }
+                    case "/start":
+                        telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
+                        break;
+                    case "/time":
+                        telegramMessageService.timeCommandReceived(chatId);
+                        break;
+                    case "/address":
+                        telegramMessageService.addressCommandReceived(chatId);
+                        break;
+                    case "/help":
+                        telegramMessageService.helpCommandReceived(chatId);
+                        break;
+                    case "/register":
+                        break;
+                    default:
+                        sendMessage(chatId, "Извините, данная команда не поддерживается!");
+                }
         });
         return com.pengrad.telegrambot.UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
