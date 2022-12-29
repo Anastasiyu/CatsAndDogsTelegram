@@ -4,8 +4,6 @@ import com.example.catsanddogstelegram.service.TelegramMessageService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,41 +25,43 @@ public class TelegramUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**Основной метод библиотеки {@link UpdatesListener} который проверяет (слушает) нет ли команд от пользователя
+     * в этом методе реализуется структура запросов и ответов бота
+     * @param updates параметр библиотеки {@link UpdatesListener} принимающий обновления команд от пользователя
+     * @return возвращает полученную по запросу строку ответа в соответствующий чат
+     */
     @Override
     public int process(List<Update> updates) {
         log.debug("method process started");
         updates.forEach(update -> {
             log.info("Processing update: {}", update);
-            String message = update.message().text();
-            long chatId = update.message().chat().id();
-            switch (message) {
-                case "/start":
-                    telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
-                    break;
-                case "/time":
-                    telegramMessageService.timeCommandReceived(chatId);
-                    break;
-                case "/address":
-                    telegramMessageService.addressCommandReceived(chatId);
-                    break;
-                case "/help":
-                    telegramMessageService.helpCommandReceived(chatId);
-                    break;
-                case "/register":
-                    break;
-                default:
-                    sendMessage(chatId, "Извините, данная команда не поддерживается!");
+            if(update.message() != null) {
+                if (update.message().text() == null || update.message().chat() == null) {
+                    log.debug("received message without any text or chat info: {}", update);
+                    return;
+                }
+                String message = update.message().text();
+                long chatId = update.message().chat().id();
+                switch (message) {
+                    case "/start":
+                        telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
+                        break;
+                    case "/time":
+                        telegramMessageService.timeCommandReceived(chatId);
+                        break;
+                    case "/address":
+                        telegramMessageService.addressCommandReceived(chatId);
+                        break;
+                    case "/help":
+                        telegramMessageService.helpCommandReceived(chatId);
+                        break;
+                    case "/register":
+                        break;
+                    default:
+                        telegramMessageService.defaultCommandReceived(chatId);
+                }
             }
         });
         return com.pengrad.telegrambot.UpdatesListener.CONFIRMED_UPDATES_ALL;
-    }
-
-    private void sendMessage(long chatId, String textToSend) {
-        log.debug("method sendMessage started");
-        SendMessage message = new SendMessage(chatId, textToSend);
-        SendResponse response = telegramBot.execute(message);
-        if(!response.isOk()){
-            log.error("message was not send: {}", response.errorCode());
-        }
     }
 }

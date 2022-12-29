@@ -20,4 +20,3 @@ CREATE TABLE animals
     description      TEXT,
     chat_id          BIGINT          REFERENCES users (chat_id)
 );
-

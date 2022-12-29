@@ -20,11 +20,6 @@ public class Dog extends Animal{
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    @Override
     public String toString() {
         return super.toString();
     }
