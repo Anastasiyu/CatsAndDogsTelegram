@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @ExtendWith(MockitoExtension.class)
-class TelegramMessageServiceTest {
+public class TelegramMessageServiceTest {
 
     private final String HELP_TEXT =
             "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
