@@ -1,6 +1,5 @@
-package com.example.catsanddogstelegram;
+package com.example.catsanddogstelegram.service;
 
-import com.example.catsanddogstelegram.service.TelegramMessageService;
 import com.pengrad.telegrambot.BotUtils;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 
 @ExtendWith(MockitoExtension.class)
 class TelegramMessageServiceTest {
@@ -62,6 +60,10 @@ class TelegramMessageServiceTest {
                 .isEqualTo("Привет Александр, рад помочь Вам!");
     }
 
+    private Update getUpdate(String json, String replaced) {
+        return BotUtils.fromJson(json.replace("%command%", replaced), Update.class);
+    }
+
     @Test
     void helpCommandReceived() {
     }
@@ -79,7 +81,4 @@ class TelegramMessageServiceTest {
     }
 
 
-    private Update getUpdate(String json, String replaced) {
-        return BotUtils.fromJson(json.replace("%command%", replaced), Update.class);
-    }
 }
