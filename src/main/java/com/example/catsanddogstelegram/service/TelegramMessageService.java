@@ -10,28 +10,29 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @Data
-public class TelegramMessageService{
+public class TelegramMessageService {
     private final TelegramBot telegramBot;
     private final String HELP_TEXT =
             "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
-            + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
-            + "Введите /start чтобы увидеть приветственное сообщение\n\n"
-            + "Введите /time чтобы увидеть время работы приюта\n\n"
-            + "Введите /address чтобы увидеть адрес приюта\n\n"
-            + "Введите /dog чтобы узнать как взять собаку из приюта\n\n"
-            + "Введите /report чтобы отправить отчет о жизни у вас питомца\n\n"
-            + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
-            + "Введите /register чтобы зарегистрироваться\n\n"
-            + "Введите /help чтобы снова увидеть это сообщение";
+                    + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
+                    + "Введите /start чтобы увидеть приветственное сообщение\n\n"
+                    + "Введите /time чтобы увидеть время работы приюта\n\n"
+                    + "Введите /address чтобы увидеть адрес приюта\n\n"
+                    + "Введите /dog чтобы узнать как взять собаку из приюта\n\n"
+                    + "Введите /report чтобы отправить отчет о жизни у вас питомца\n\n"
+                    + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
+                    + "Введите /register чтобы зарегистрироваться\n\n"
+                    + "Введите /help чтобы снова увидеть это сообщение";
     private final String TIME_TEXT = "Время работы приюта: пн-пт с 8-00 до 19-00, сб-вс с 10-00 до 15-00 ";
     private final String ADDRESS_TEXT = "Наш адрес: ул. Ленина, дом 123 ";
     private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!\nCписок команд /info";
     private final String ERROR_TEXT = "Error occurred: ";
 
-    /**Вывод приветственного сообщения с именем пользователя
+    /**
+     * Вывод приветственного сообщения с именем пользователя
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
-     * @param name имя пользователя который бот берет из телеграмм чата
+     * @param name   имя пользователя который бот берет из телеграмм чата
      */
     //нужно написать приветственное сообщение с рассказом о себе
     public void startCommandReceived(long chatId, String name) {
@@ -41,7 +42,8 @@ public class TelegramMessageService{
         sendMessage(chatId, answer);
     }
 
-    /**Вывод константного меню HELP_TEXT для ознакомления пользователя с возможными командами бота
+    /**
+     * Вывод константного меню HELP_TEXT для ознакомления пользователя с возможными командами бота
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
@@ -50,7 +52,8 @@ public class TelegramMessageService{
         sendMessage(chatId, HELP_TEXT);
     }
 
-    /**Вывод константного меню ADDRESS_TEXT для ознакомления пользователя с адресом приюта
+    /**
+     * Вывод константного меню ADDRESS_TEXT для ознакомления пользователя с адресом приюта
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
@@ -59,7 +62,8 @@ public class TelegramMessageService{
         sendMessage(chatId, ADDRESS_TEXT);
     }
 
-    /**Вывод константного меню TIME_TEXT для ознакомления пользователя с графиком работы приюта
+    /**
+     * Вывод константного меню TIME_TEXT для ознакомления пользователя с графиком работы приюта
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
@@ -68,7 +72,8 @@ public class TelegramMessageService{
         sendMessage(chatId, TIME_TEXT);
     }
 
-    /**Вывод константного меню DEFAULT_TEXT при запросе несуществующей команды
+    /**
+     * Вывод константного меню DEFAULT_TEXT при запросе несуществующей команды
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
@@ -77,17 +82,19 @@ public class TelegramMessageService{
         sendMessage(chatId, DEFAULT_TEXT);
     }
 
-    /**Метод для отправки сообщений ботом
+    /**
+     * Метод для отправки сообщений ботом
      * метод создает новую строку и определяя по chatId отправляет сообщение пользователю
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     *
+     * @param chatId     идентификатор чата для определения ботом кому отвечать
      * @param textToSend сформированный текст для отправки пользователю
      */
     private void sendMessage(long chatId, String textToSend) {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);
         SendResponse response = telegramBot.execute(message);
-        if(!response.isOk()){
-            log.error("message was not send: {}", response.errorCode());
-        }
+//         if(!response.isOk()){
+//            log.error("message was not send: {}", response.errorCode());
+//        }
     }
 }
