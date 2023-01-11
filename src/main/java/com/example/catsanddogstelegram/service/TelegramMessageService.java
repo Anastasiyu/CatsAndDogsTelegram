@@ -22,7 +22,7 @@ public class TelegramMessageService {
                     + "Введите /reportDog чтобы отправить отчет о жизни у вас питомца\n\n"
                     + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
                     + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /help чтобы снова увидеть это сообщение";
+                    + "Введите /helpDog чтобы снова увидеть это сообщение";
 
     private final String HELP_TEXT_CAT =
             "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
@@ -34,7 +34,7 @@ public class TelegramMessageService {
                     + "Введите /reportCat чтобы отправить отчет о жизни у вас питомца\n\n"
                     + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
                     + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /help чтобы снова увидеть это сообщение";
+                    + "Введите /helpCat чтобы снова увидеть это сообщение";
     private final String TIME_TEXT = "Время работы приюта: пн-пт с 8-00 до 19-00, сб-вс с 10-00 до 15-00 ";
 
     private final String ADDRESS_TEXT_DOG = "Наш адрес: ул. Ленина, дом 123 ";
@@ -125,8 +125,8 @@ public class TelegramMessageService {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);
         SendResponse response = telegramBot.execute(message);
-//         if(!response.isOk()){
-//            log.error("message was not send: {}", response.errorCode());
-//        }
+        if(!response.isOk()){
+           log.error("message was not send: {}", response.errorCode());
+        }
     }
 }

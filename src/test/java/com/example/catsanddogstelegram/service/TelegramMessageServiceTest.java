@@ -46,12 +46,12 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void helpCommandReceived() throws URISyntaxException, IOException {
+    void helpCommandReceivedDog() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json").toURI()));
         Update update = getUpdate(json, "/help");
-        telegramMessageService.helpCommandReceived(update.message().from().id());
+        telegramMessageService.helpCommandReceivedDog(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -59,16 +59,34 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo(telegramMessageService.getHELP_TEXT());
+                .isEqualTo(telegramMessageService.getHELP_TEXT_DOG());
     }
 
     @Test
-    void addressCommandReceived() throws URISyntaxException, IOException {
+    void helpCommandReceivedCat() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json").toURI()));
+        Update update = getUpdate(json, "/help");
+        telegramMessageService.helpCommandReceivedCat(update.message().from().id());
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
+        Assertions.assertThat(actual.getParameters().get("text"))
+                .isEqualTo(telegramMessageService.getHELP_TEXT_CAT());
+    }
+
+
+    @Test
+    void addressCommandReceivedDog() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json").toURI()));
         Update update = getUpdate(json, "/address");
-        telegramMessageService.addressCommandReceived(update.message().from().id());
+        telegramMessageService.addressCommandReceivedDog(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -76,7 +94,23 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo(telegramMessageService.getADDRESS_TEXT());
+                .isEqualTo(telegramMessageService.getADDRESS_TEXT_DOG());
+    }
+    @Test
+    void addressCommandReceivedCat() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json").toURI()));
+        Update update = getUpdate(json, "/address");
+        telegramMessageService.addressCommandReceivedCat(update.message().from().id());
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
+        Assertions.assertThat(actual.getParameters().get("text"))
+                .isEqualTo(telegramMessageService.getADDRESS_TEXT_CAT());
     }
 
     @Test
