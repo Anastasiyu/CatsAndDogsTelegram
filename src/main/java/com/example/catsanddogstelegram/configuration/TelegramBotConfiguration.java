@@ -26,12 +26,17 @@ public class TelegramBotConfiguration {
         telegramBot.execute(new SetMyCommands(
                 new BotCommand("/start", "get a welcome message"),
                 new BotCommand("/time", "opening hours of the shelter"),
-                new BotCommand("/address", "address of the shelter"),
+                new BotCommand("/addressDog", "address dog of the shelter"),
                 new BotCommand("/dog", "how to take a dog from a shelter"),
-                new BotCommand("/report", "report on the life of your pet"),
+                new BotCommand("/reportDog", "report on the life of your pet"),
                 new BotCommand("/volunteer", "call a volunteer"),
-                new BotCommand("/help", "info how to use this bot"),
-                new BotCommand("/register", "get new user")));
+                new BotCommand("/helpDog", "info dog how to use this bot"),
+                new BotCommand("/register", "get new user"),
+                new BotCommand("/helpCat", "info cat how to use this bot"),
+                new BotCommand("/addressCat", "address cat of the shelter"),
+                new BotCommand("/cat", "how to take a dog from a shelter"),
+                new BotCommand("/reportCat", "report on the life of your pet")));
+
         return telegramBot;
     }
 }

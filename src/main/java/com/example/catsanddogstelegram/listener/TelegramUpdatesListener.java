@@ -49,11 +49,17 @@ public class TelegramUpdatesListener implements UpdatesListener {
                     case "/time":
                         telegramMessageService.timeCommandReceived(chatId);
                         break;
-                    case "/address":
-                        telegramMessageService.addressCommandReceived(chatId);
+                    case "/addressDog":
+                        telegramMessageService.addressCommandReceivedDog(chatId);
                         break;
-                    case "/help":
-                        telegramMessageService.helpCommandReceived(chatId);
+                    case "/addressCat":
+                        telegramMessageService.addressCommandReceivedCat(chatId);
+                        break;
+                    case "/helpDog":
+                        telegramMessageService.helpCommandReceivedDog(chatId);
+                        break;
+                    case "/helpCat":
+                        telegramMessageService.helpCommandReceivedCat(chatId);
                         break;
                     case "/register":
                         break;
