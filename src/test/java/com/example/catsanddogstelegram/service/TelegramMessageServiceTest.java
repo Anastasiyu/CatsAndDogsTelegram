@@ -146,9 +146,10 @@ public class TelegramMessageServiceTest {
         Assertions.assertThat(actual.getParameters().get("text"))
                 .isEqualTo(telegramMessageService.getDEFAULT_TEXT());
     }
-
     private Update getUpdate(String json, String replaced)  throws URISyntaxException, IOException  {
         return BotUtils.fromJson(json.replace("%command%", replaced), Update.class);
     }
+
+
 
 }
