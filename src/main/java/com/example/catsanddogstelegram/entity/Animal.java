@@ -19,7 +19,7 @@ public abstract class Animal {
      /**Поле идентификационный номер которое
      * присваивает номер животному в порядке их поступления в приют
      * не зависимо от дальнейшего наследника класса
-     * с помощью указанных аннотаций {@link @Id}  и {@link @GeneratedValue(strategy = GenerationType.IDENTITY)}
+     * с помощью указанных аннотаций {@link @Id}  и {@link @GeneratedValue(strategy = GenerationType.SEQUENCE)}
      * аннотация {@Column} указывает на название колонки параметра в БД
      */
     @Id
