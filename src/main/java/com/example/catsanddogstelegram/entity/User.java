@@ -12,7 +12,6 @@ import java.util.Collection;
  * @author new developers
  * @version 1.0
  */
-
 @Entity
 @Table(name = "users")
 @Data
@@ -30,19 +29,21 @@ public class User {
     /** Поле имя пользователя*/
     @Column(name = "user_name")
     private String userName;
+    @Column(name = "shelter_type")
+    private int type;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    /** Поле возраст пользователя*/
-    @Column(name = "user_age")
-    private int userAge;
-
-    /**Метод БД определяющий зависимость у одного пользователя много животных*/
-    @OneToMany(mappedBy = "user")
-    private Collection<Animal> animals;
+//    /**Метод БД определяющий зависимость у одного пользователя много животных*/
+//    @OneToMany(mappedBy = "user")
+//    private Collection<Animal> animals;
 
     @Override
     public String toString() {
         return "Пользователь" +
-                "  " + chatId + " " + userAge +
+                "  " + chatId  +
                 " "  + userName +
                 "/ " + userTime;
     }

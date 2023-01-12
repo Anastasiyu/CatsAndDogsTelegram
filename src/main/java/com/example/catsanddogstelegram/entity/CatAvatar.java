@@ -7,6 +7,6 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@Table(name = "cats")
-public class Cat extends Animal{
+@Table(name = "cat_avatars")
+public class CatAvatar extends Avatar{
 }

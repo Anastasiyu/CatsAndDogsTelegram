@@ -2,7 +2,6 @@ package com.example.catsanddogstelegram.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -124,9 +123,6 @@ public class TelegramMessageService {
     private void sendMessage(long chatId, String textToSend) {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);
-        SendResponse response = telegramBot.execute(message);
-//         if(!response.isOk()){
-//            log.error("message was not send: {}", response.errorCode());
-//        }
+        telegramBot.execute(message);
     }
 }
