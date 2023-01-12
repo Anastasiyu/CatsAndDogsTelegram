@@ -79,11 +79,11 @@ public enum PreparingInfoCat {
 
     private final String typeOfInfo;
 
-    private PreparingInfoCat(String typeOfInfo) {
+    PreparingInfoCat(String typeOfInfo) {
         this.typeOfInfo = typeOfInfo;
     }
 
     public String getTypeOfInfo() {
-        return this.getTypeOfInfo();
+        return typeOfInfo;
     }
 }

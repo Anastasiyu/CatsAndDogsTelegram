@@ -3,7 +3,6 @@ package com.example.catsanddogstelegram.controller;
 import com.example.catsanddogstelegram.entity.Cat;
 import com.example.catsanddogstelegram.service.CatService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +26,7 @@ public class CatController {
                             description = "Информация о кошке, занесенная в базу",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Cat.class))
+                                    schema = @Schema(implementation = Cat.class)
                             )
                     )
             }, tags = "Cat"
@@ -44,13 +43,13 @@ public class CatController {
                             description = "Информация о кошке, найденная по id",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Cat.class))
+                                    schema = @Schema(implementation = Cat.class)
                             )
                     )
             }, tags = "Cat"
     )
     @GetMapping("{id}")
-    public ResponseEntity<Cat> read(@PathVariable long animalId) {
+    public ResponseEntity<Cat> read(@PathVariable(name = "id") long animalId) {
         Cat cat = catService.read(animalId);
         return ResponseEntity.ok(cat);
     }
@@ -62,13 +61,13 @@ public class CatController {
                             description = "Новые данные о кошке",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Cat.class))
+                                    schema = @Schema(implementation = Cat.class)
                             )
                     )
             }, tags = "Cat"
     )
     @PutMapping("{id}")
-    public ResponseEntity<Cat> update(@PathVariable long animalId,
+    public ResponseEntity<Cat> update(@PathVariable(name = "id") long animalId,
                                       @RequestBody Cat cat) {
         Cat foundCat = catService.update(animalId, cat);
         return ResponseEntity.ok(foundCat);
@@ -81,13 +80,13 @@ public class CatController {
                             description = "Удаленные данные о кошке",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Cat.class))
+                                    schema = @Schema(implementation = Cat.class)
                             )
                     )
             }, tags = "Cat"
     )
     @DeleteMapping("{id}")
-    public ResponseEntity<Cat> delete(@PathVariable long animalId) {
+    public ResponseEntity<Cat> delete(@PathVariable(name = "id") long animalId) {
         catService.delete(animalId);
         return ResponseEntity.ok().build();
     }

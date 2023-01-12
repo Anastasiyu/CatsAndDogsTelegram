@@ -98,12 +98,12 @@ public enum PreparingInfoDog {
 
     private final String typeOfInfo;
 
-    private PreparingInfoDog(String typeOfInfo) {
+    PreparingInfoDog(String typeOfInfo) {
         this.typeOfInfo = typeOfInfo;
     }
 
     public String getTypeOfInfo() {
-        return this.getTypeOfInfo();
+        return typeOfInfo;
     }
 
 

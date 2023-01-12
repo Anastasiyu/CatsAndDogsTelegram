@@ -3,7 +3,6 @@ package com.example.catsanddogstelegram.controller;
 import com.example.catsanddogstelegram.entity.Dog;
 import com.example.catsanddogstelegram.service.DogService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +26,7 @@ public class DogController {
                             description = "Информация о собаке, занесенная в базу",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Dog.class))
+                                    schema = @Schema(implementation = Dog.class)
                             )
                     )
             }, tags = "Dog"
@@ -44,13 +43,13 @@ public class DogController {
                             description = "Информация о собаке, найденная по id",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Dog.class))
+                                    schema = @Schema(implementation = Dog.class)
                             )
                     )
             }, tags = "Dog"
     )
     @GetMapping("{id}")
-    public ResponseEntity<Dog> read(@PathVariable long animalId) {
+    public ResponseEntity<Dog> read(@PathVariable(name = "id") long animalId) {
         Dog dog = dogService.read(animalId);
         return ResponseEntity.ok(dog);
     }
@@ -62,13 +61,13 @@ public class DogController {
                             description = "Новые данные о собаке",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Dog.class))
+                                    schema = @Schema(implementation = Dog.class)
                             )
                     )
             }, tags = "Dog"
     )
     @PutMapping("{id}")
-    public ResponseEntity<Dog> update(@PathVariable long animalId,
+    public ResponseEntity<Dog> update(@PathVariable(name = "id") long animalId,
                                       @RequestBody Dog dog) {
         Dog foundDog = dogService.update(animalId, dog);
         return ResponseEntity.ok(foundDog);
@@ -81,13 +80,13 @@ public class DogController {
                             description = "Удаленные данные о собаке",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Dog.class))
+                                    schema = @Schema(implementation = Dog.class)
                             )
                     )
             }, tags = "Dog"
     )
     @DeleteMapping("{id}")
-    public ResponseEntity<Dog> delete(@PathVariable long animalId) {
+    public ResponseEntity<Dog> delete(@PathVariable(name = "id") long animalId) {
         dogService.delete(animalId);
         return ResponseEntity.ok().build();
     }

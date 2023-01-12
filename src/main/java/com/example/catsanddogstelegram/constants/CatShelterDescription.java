@@ -25,7 +25,7 @@ public enum CatShelterDescription {
 
     private final String typeInfoAboutCatShelter;
 
-    private CatShelterDescription(String typeOfInfoAboutCatShelter) {
+    CatShelterDescription(String typeOfInfoAboutCatShelter) {
         this.typeInfoAboutCatShelter = typeOfInfoAboutCatShelter;
     }
 

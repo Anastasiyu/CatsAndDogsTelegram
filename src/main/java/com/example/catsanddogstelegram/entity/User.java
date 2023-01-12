@@ -35,6 +35,8 @@ public class User {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "request_status")
+    private boolean status;
 
 //    /**Метод БД определяющий зависимость у одного пользователя много животных*/
 //    @OneToMany(mappedBy = "user")

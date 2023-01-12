@@ -105,3 +105,6 @@ CREATE TABLE cat_avatars
     media_type       varchar(50)    NOT NULL,
     animal_id        INT            REFERENCES cats (animal_id)
 );
+
+--changeset chibiaSad:5
+ALTER TABLE users ADD COLUMN request_status BOOLEAN DEFAULT false;

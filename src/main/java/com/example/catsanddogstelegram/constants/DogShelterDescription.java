@@ -30,7 +30,7 @@ public enum DogShelterDescription {
 
     private final String typeInfoAboutDogShelter;
 
-    private DogShelterDescription(String typeInfoAboutDogShelter) {
+    DogShelterDescription(String typeInfoAboutDogShelter) {
         this.typeInfoAboutDogShelter = typeInfoAboutDogShelter;
     }
 

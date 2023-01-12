@@ -11,35 +11,40 @@ import org.springframework.stereotype.Service;
 @Data
 public class TelegramMessageService {
     private final TelegramBot telegramBot;
-    private final String HELP_TEXT_DOG =
-            "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
-                    + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
-                    + "Введите /start чтобы увидеть приветственное сообщение\n\n"
-                    + "Введите /time чтобы увидеть время работы приюта\n\n"
-                    + "Введите /addressDog чтобы увидеть адрес приюта\n\n"
-                    + "Введите /dog чтобы узнать как взять собаку из приюта\n\n"
-                    + "Введите /reportDog чтобы отправить отчет о жизни у вас питомца\n\n"
-                    + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
-                    + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /helpDog чтобы снова увидеть это сообщение";
+    private final UserService userService;
+    private final String ABOUT_US_TEXT =
+                    "В разделе о нас вы можете больше о нашем приюте:\n\n"
+                    + "/info - узнать о приюте\n\n"
+                    + "/time - время работы приюта\n\n"
+                    + "/contacts - наши контакты\n\n"
+                    + "/address - адрес приюта\n\n"
+                    + "/safety - правила безопасности\n\n"
+                    + "/register - отправить контактные данные\n\n"
+                    + "/volunteer - позвать волонтера\n\n"
+                    + "/choice вернуться к выбору приюта";
 
-    private final String HELP_TEXT_CAT =
-            "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
-                    + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
-                    + "Введите /start чтобы увидеть приветственное сообщение\n\n"
-                    + "Введите /time чтобы увидеть время работы приюта\n\n"
-                    + "Введите /addressCat чтобы увидеть адрес приюта\n\n"
-                    + "Введите /cat чтобы узнать как взять кошку из приюта\n\n"
-                    + "Введите /reportCat чтобы отправить отчет о жизни у вас питомца\n\n"
-                    + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
-                    + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /helpCat чтобы снова увидеть это сообщение";
-    private final String TIME_TEXT = "Время работы приюта: пн-пт с 8-00 до 19-00, сб-вс с 10-00 до 15-00 ";
+    private final String ADOPT_TEXT_DOG =
+            "В разделе о нас вы можете больше о нашем приюте:\n\n"
+                    + "/meet - правила знакомства с животным до того, как забрать его из приюта\n\n"
+                    + "/docs - список документов, необходимых для того, чтобы взять животное из приюта\n\n"
+                    + "/transport - список рекомендаций по транспортировке животного\n\n"
+                    + "/preparing - список рекомендаций  по обустройству дома для животного\n\n"
+                    + "/cynologist - советы кинолога по первичному общению с собакой\n\n"
+                    + "/refuse - список причин, почему могут отказать и не дать забрать собаку из приюта\n\n"
+                    + "/register - отправить контактные данные\n\n"
+                    + "/volunteer - позвать волонтера\n\n"
+                    + "/choice - вернуться к выбору приюта";
 
-    private final String ADDRESS_TEXT_DOG = "Наш адрес: ул. Ленина, дом 123 ";
-    private final String ADDRESS_TEXT_CAT = "Наш адрес: ул. Комарова, дом 10 ";
-    private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!\nCписок команд /info";
-    private final String ERROR_TEXT = "Error occurred: ";
+    private final String ADOPT_TEXT_CAT =
+            "В разделе о нас вы можете больше о нашем приюте:\n\n"
+                    + "/meet - правила знакомства с животным до того, как забрать его из приюта\n\n"
+                    + "/docs - список документов, необходимых для того, чтобы взять животное из приюта\n\n"
+                    + "/transport - список рекомендаций по транспортировке животного\n\n"
+                    + "/preparing - список рекомендаций  по обустройству дома для животного\n\n"
+                    + "/register - отправить контактные данные\n\n"
+                    + "/volunteer - позвать волонтера\n\n"
+                    + "/choice - вернуться к выбору приюта";
+    private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!";
 
     /**
      * Вывод приветственного сообщения с именем пользователя
@@ -47,12 +52,22 @@ public class TelegramMessageService {
      * @param chatId идентификатор чата для определения ботом кому отвечать
      * @param name   имя пользователя который бот берет из телеграмм чата
      */
-    //нужно написать приветственное сообщение с рассказом о себе
     public void startCommandReceived(long chatId, String name) {
         log.debug("method startCommandReceived started");
-        String answer = "Привет " + name + ", рад помочь Вам!";
+        String answer = "Привет " + name + ", рад помочь Вам!" +
+                " Для начала выберите приют к которому хотите обратиться.\n" +
+                "/dog - приют для собак\n" +
+                "/cat - приют для кошек";
         log.info("Ответил пользователю " + name);
         sendMessage(chatId, answer);
+    }
+
+    public void ShelterCommandReceived(long chatId) {
+        log.debug("method ShelterCommandReceived started");
+        sendMessage(chatId, "/aboutUs - узнать больше о приюте\n" +
+                "/adopt - как взять питомца\n" +
+                "/report - отправить отчет\n" +
+                "/volunteer - позвать волонтера");
     }
 
     /**
@@ -60,47 +75,42 @@ public class TelegramMessageService {
      * если хотят взять собаку
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
-    public void helpCommandReceivedDog(long chatId) {
-        log.debug("method helpCommandReceived started");
-        sendMessage(chatId, HELP_TEXT_DOG);
-    }
-    /**
-     * Вывод константного меню HELP_TEXT_CAT для ознакомления пользователя с возможными командами бота
-     * если хотят взять собаку
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     */
-    public void helpCommandReceivedCat(long chatId) {
-        log.debug("method helpCommandReceived started");
-        sendMessage(chatId, HELP_TEXT_CAT);
+    public void aboutUsCommandReceived(long chatId) {
+        log.debug("method aboutUsCommandReceived started");
+        sendMessage(chatId, ABOUT_US_TEXT);
     }
 
-    /**
-     * Вывод константного меню ADDRESS_TEXT_DOG для ознакомления пользователя с адресом приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     */
-    public void addressCommandReceivedDog(long chatId) {
-        log.debug("method addressCommandReceived started");
-        sendMessage(chatId, ADDRESS_TEXT_DOG);
-    }
-    /**
-     * Вывод константного меню ADDRESS_TEXT_CAT для ознакомления пользователя с адресом приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     */
-    public void addressCommandReceivedCat(long chatId) {
-        log.debug("method addressCommandReceived started");
-        sendMessage(chatId, ADDRESS_TEXT_CAT);
+    public void adoptCommandReceived(long chatId) {
+        log.debug("method adoptCommandReceived started");
+        if(userService.getShelterType(chatId) == 1){
+            sendMessage(chatId, ADOPT_TEXT_DOG);
+        }else{
+            sendMessage(chatId, ADOPT_TEXT_CAT);
+        }
     }
 
-    /**
-     * Вывод константного меню TIME_TEXT для ознакомления пользователя с графиком работы приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     */
-    public void timeCommandReceived(long chatId) {
-        log.debug("method timeCommandReceived started");
-        sendMessage(chatId, TIME_TEXT);
+    public void reportCommandReceived(long chatId) {
+        log.debug("method reportCommandReceived started");
+    }
+
+    public void volunteerCommandReceived(long chatId) {
+        log.debug("method volunteerCommandReceived started");
+    }
+
+    public void registerCommandReceived(long chatId) {
+        log.debug("method registerCommandReceived started");
+        userService.setUser(chatId, true);
+        sendMessage(chatId, "Введите ваш номер телефона");
+    }
+
+    public void registerVerify(long chatId, String message) {
+        if(message.matches("^\\+\\d{11}$|^\\d{11}$")){
+            userService.setUser(chatId, message.trim());
+            userService.setUser(chatId, false);
+            sendMessage(chatId, "Сохранено, скоро свяжемся");
+        } else {
+            sendMessage(chatId, "неверный формат номера, попробуйте ещё раз");
+        }
     }
 
     /**
