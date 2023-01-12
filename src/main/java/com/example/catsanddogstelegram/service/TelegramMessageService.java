@@ -12,19 +12,33 @@ import org.springframework.stereotype.Service;
 @Data
 public class TelegramMessageService {
     private final TelegramBot telegramBot;
-    private final String HELP_TEXT =
+    private final String HELP_TEXT_DOG =
             "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
                     + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
                     + "Введите /start чтобы увидеть приветственное сообщение\n\n"
                     + "Введите /time чтобы увидеть время работы приюта\n\n"
-                    + "Введите /address чтобы увидеть адрес приюта\n\n"
+                    + "Введите /addressDog чтобы увидеть адрес приюта\n\n"
                     + "Введите /dog чтобы узнать как взять собаку из приюта\n\n"
-                    + "Введите /report чтобы отправить отчет о жизни у вас питомца\n\n"
+                    + "Введите /reportDog чтобы отправить отчет о жизни у вас питомца\n\n"
                     + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
                     + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /help чтобы снова увидеть это сообщение";
+                    + "Введите /helpDog чтобы снова увидеть это сообщение";
+
+    private final String HELP_TEXT_CAT =
+            "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
+                    + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
+                    + "Введите /start чтобы увидеть приветственное сообщение\n\n"
+                    + "Введите /time чтобы увидеть время работы приюта\n\n"
+                    + "Введите /addressCat чтобы увидеть адрес приюта\n\n"
+                    + "Введите /cat чтобы узнать как взять кошку из приюта\n\n"
+                    + "Введите /reportCat чтобы отправить отчет о жизни у вас питомца\n\n"
+                    + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
+                    + "Введите /register чтобы зарегистрироваться\n\n"
+                    + "Введите /helpCat чтобы снова увидеть это сообщение";
     private final String TIME_TEXT = "Время работы приюта: пн-пт с 8-00 до 19-00, сб-вс с 10-00 до 15-00 ";
-    private final String ADDRESS_TEXT = "Наш адрес: ул. Ленина, дом 123 ";
+
+    private final String ADDRESS_TEXT_DOG = "Наш адрес: ул. Ленина, дом 123 ";
+    private final String ADDRESS_TEXT_CAT = "Наш адрес: ул. Комарова, дом 10 ";
     private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!\nCписок команд /info";
     private final String ERROR_TEXT = "Error occurred: ";
 
@@ -43,23 +57,41 @@ public class TelegramMessageService {
     }
 
     /**
-     * Вывод константного меню HELP_TEXT для ознакомления пользователя с возможными командами бота
-     *
+     * Вывод константного меню HELP_TEXT_DOG для ознакомления пользователя с возможными командами бота
+     * если хотят взять собаку
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
-    public void helpCommandReceived(long chatId) {
+    public void helpCommandReceivedDog(long chatId) {
         log.debug("method helpCommandReceived started");
-        sendMessage(chatId, HELP_TEXT);
+        sendMessage(chatId, HELP_TEXT_DOG);
+    }
+    /**
+     * Вывод константного меню HELP_TEXT_CAT для ознакомления пользователя с возможными командами бота
+     * если хотят взять собаку
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     */
+    public void helpCommandReceivedCat(long chatId) {
+        log.debug("method helpCommandReceived started");
+        sendMessage(chatId, HELP_TEXT_CAT);
     }
 
     /**
-     * Вывод константного меню ADDRESS_TEXT для ознакомления пользователя с адресом приюта
+     * Вывод константного меню ADDRESS_TEXT_DOG для ознакомления пользователя с адресом приюта
      *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
-    public void addressCommandReceived(long chatId) {
+    public void addressCommandReceivedDog(long chatId) {
         log.debug("method addressCommandReceived started");
-        sendMessage(chatId, ADDRESS_TEXT);
+        sendMessage(chatId, ADDRESS_TEXT_DOG);
+    }
+    /**
+     * Вывод константного меню ADDRESS_TEXT_CAT для ознакомления пользователя с адресом приюта
+     *
+     * @param chatId идентификатор чата для определения ботом кому отвечать
+     */
+    public void addressCommandReceivedCat(long chatId) {
+        log.debug("method addressCommandReceived started");
+        sendMessage(chatId, ADDRESS_TEXT_CAT);
     }
 
     /**
