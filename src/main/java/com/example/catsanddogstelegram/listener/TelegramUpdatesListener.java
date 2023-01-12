@@ -1,6 +1,7 @@
 package com.example.catsanddogstelegram.listener;
 
 import com.example.catsanddogstelegram.service.TelegramMessageService;
+import com.example.catsanddogstelegram.service.UserService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -17,6 +18,7 @@ import java.util.List;
 public class TelegramUpdatesListener implements UpdatesListener {
     private final TelegramBot telegramBot;
     private final TelegramMessageService telegramMessageService;
+    private final UserService userService;
 
 
     @PostConstruct
@@ -46,6 +48,12 @@ public class TelegramUpdatesListener implements UpdatesListener {
                     case "/start":
                         telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
                         break;
+//                    case "Приют для собак":
+//                        userService.saveUser(chatId, Timestamp.valueOf(LocalDateTime.now()), update.message().from().firstName(), 1);
+//                        break;
+//                    case "Приют для кошек":
+//                        userService.saveUser(chatId, Timestamp.valueOf(LocalDateTime.now()), update.message().from().firstName(), 2);
+//                        break;
                     case "/time":
                         telegramMessageService.timeCommandReceived(chatId);
                         break;
