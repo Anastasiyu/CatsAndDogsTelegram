@@ -20,7 +20,25 @@ public class VolunteerService {
     private final VolunteerRepository volunteerRepository;
     private final TelegramBot telegramBot;
 
-    //CRUD
+    public Volunteer createVolunteer(Volunteer volunteer) {
+        return volunteerRepository.save(volunteer);
+    }
+
+    public Volunteer readVolunteerById(int id) {
+        return volunteerRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    public Volunteer updateVolunteer(Volunteer volunteer) {
+        Volunteer toUpdate = readVolunteerById(volunteer.getId());
+        toUpdate.setName(volunteer.getName());
+        toUpdate.setChatId(volunteer.getChatId());
+        toUpdate.setOnline(volunteer.isOnline());
+        return volunteerRepository.save(toUpdate);
+    }
+
+    public void deleteVolunteer(int id) {
+        volunteerRepository.delete(readVolunteerById(id));
+    }
 
     public void volunteerCommandReceived(long chatId, String name) {
         log.debug("method volunteerCommandReceived started");
