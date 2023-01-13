@@ -108,3 +108,13 @@ CREATE TABLE cat_avatars
 
 --changeset chibiaSad:5
 ALTER TABLE users ADD COLUMN request_status BOOLEAN DEFAULT false;
+
+--changeset chibiaSad:6
+ALTER TABLE cats DROP COLUMN chat_id;
+ALTER TABLE dogs DROP COLUMN chat_id;
+ALTER TABLE dog_adopters ADD COLUMN animal_id INT REFERENCES dogs(animal_id);
+ALTER TABLE cat_adopters ADD COLUMN animal_id INT REFERENCES cats(animal_id);
+
+--changeset chibiaSad:7
+DROP TABLE cat_avatars;
+DROP TABLE dog_avatars;

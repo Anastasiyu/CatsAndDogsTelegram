@@ -21,17 +21,17 @@ public class CatService {
         return catRepository.save(cat);
     }
 
-    public Cat read(long animalId) {
+    public Cat read(int animalId) {
         log.info("method read started");
         return catRepository.findById(animalId).orElseThrow(() -> new CatNotFoundException(animalId));
     }
 
-    public Cat update(long animalId, Cat cat) {
+    public Cat update(int animalId, Cat cat) {
         log.info("method update started");
         return catRepository.save(cat);
     }
 
-    public void delete(long animalId) {
+    public void delete(int animalId) {
         log.info("method delete started");
         catRepository.deleteById(animalId);
     }

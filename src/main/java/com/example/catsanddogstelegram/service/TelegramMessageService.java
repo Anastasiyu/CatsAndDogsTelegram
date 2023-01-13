@@ -64,10 +64,6 @@ public class TelegramMessageService {
         log.debug("method reportCommandReceived started");
     }
 
-    public void volunteerCommandReceived(long chatId) {
-        log.debug("method volunteerCommandReceived started");
-    }
-
     public void registerCommandReceived(long chatId) {
         log.debug("method registerCommandReceived started");
         userService.setUser(chatId, true);

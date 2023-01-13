@@ -1,9 +1,6 @@
 package com.example.catsanddogstelegram.listener;
 
-import com.example.catsanddogstelegram.service.AboutUsMessageService;
-import com.example.catsanddogstelegram.service.AdoptMessageService;
-import com.example.catsanddogstelegram.service.TelegramMessageService;
-import com.example.catsanddogstelegram.service.UserService;
+import com.example.catsanddogstelegram.service.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -24,6 +21,7 @@ public class TelegramUpdatesListener implements UpdatesListener {
     private final TelegramMessageService telegramMessageService;
     private final AboutUsMessageService aboutUsMessageService;
     private final AdoptMessageService adoptMessageService;
+    private final VolunteerService volunteerService;
     private final UserService userService;
 
 
@@ -33,8 +31,10 @@ public class TelegramUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
-    /**Основной метод библиотеки {@link UpdatesListener} который проверяет (слушает) нет ли команд от пользователя
+    /**
+     * Основной метод библиотеки {@link UpdatesListener} который проверяет (слушает) нет ли команд от пользователя
      * в этом методе реализуется структура запросов и ответов бота
+     *
      * @param updates параметр библиотеки {@link UpdatesListener} принимающий обновления команд от пользователя
      * @return возвращает полученную по запросу строку ответа в соответствующий чат
      */
@@ -43,14 +43,14 @@ public class TelegramUpdatesListener implements UpdatesListener {
         log.debug("method process started");
         updates.forEach(update -> {
             log.info("Processing update: {}", update);
-            if(update.message() != null) {
+            if (update.message() != null) {
                 if (update.message().text() == null || update.message().chat() == null) {
                     log.debug("received message without any text or chat info: {}", update);
                     return;
                 }
                 String message = update.message().text();
                 long chatId = update.message().chat().id();
-                if(!message.equals("/start") && userService.getRequestStatus(chatId)){
+                if (!message.equals("/start") && userService.getRequestStatus(chatId)) {
                     telegramMessageService.registerVerify(chatId, message);
                     return;
                 }
@@ -64,7 +64,7 @@ public class TelegramUpdatesListener implements UpdatesListener {
                         telegramMessageService.ShelterCommandReceived(chatId);
                         break;
                     case "/cat":
-                        userService.setUser(chatId,2);
+                        userService.setUser(chatId, 2);
                         telegramMessageService.ShelterCommandReceived(chatId);
                         break;
 
@@ -114,19 +114,26 @@ public class TelegramUpdatesListener implements UpdatesListener {
                         break;
                     //общее
                     case "/volunteer":
-                        telegramMessageService.volunteerCommandReceived(chatId);
+                        volunteerService.volunteerCommandReceived(chatId, update.message().from().username());
                         break;
                     case "/register":
                         telegramMessageService.registerCommandReceived(chatId);
+                        break;
+                    //волонтерское
+                    case "/on":
+                        volunteerService.onCommandReceived(chatId);
+                        break;
+                    case "/off":
+                        volunteerService.offCommandReceived(chatId);
                         break;
                     default:
                         telegramMessageService.defaultCommandReceived(chatId);
                 }
             }
-            if(update.callbackQuery() != null){
+            if (update.callbackQuery() != null) {
                 String data = update.callbackQuery().data();
                 long chatId = update.callbackQuery().message().chat().id();
-                switch(data){
+                switch (data) {
                     case "/cancel":
                         telegramMessageService.cancelCommandReceived(chatId);
                         break;

@@ -50,11 +50,6 @@ public abstract class Animal {
     @Column(name = "is_adopted")
     private boolean isAdopted;
 
-//    /**Метод БД определяющий зависимость много животных у одного пользователя*/
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "chat_id")
-//    private User user;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
