@@ -1,10 +1,14 @@
 package com.example.catsanddogstelegram.service;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import static com.example.catsanddogstelegram.constants.MenuTexts.*;
 
 @Service
 @Slf4j
@@ -12,39 +16,6 @@ import org.springframework.stereotype.Service;
 public class TelegramMessageService {
     private final TelegramBot telegramBot;
     private final UserService userService;
-    private final String ABOUT_US_TEXT =
-                    "В разделе о нас вы можете больше о нашем приюте:\n\n"
-                    + "/info - узнать о приюте\n\n"
-                    + "/time - время работы приюта\n\n"
-                    + "/contacts - наши контакты\n\n"
-                    + "/address - адрес приюта\n\n"
-                    + "/safety - правила безопасности\n\n"
-                    + "/register - отправить контактные данные\n\n"
-                    + "/volunteer - позвать волонтера\n\n"
-                    + "/choice вернуться к выбору приюта";
-
-    private final String ADOPT_TEXT_DOG =
-            "В разделе о нас вы можете больше о нашем приюте:\n\n"
-                    + "/meet - правила знакомства с животным до того, как забрать его из приюта\n\n"
-                    + "/docs - список документов, необходимых для того, чтобы взять животное из приюта\n\n"
-                    + "/transport - список рекомендаций по транспортировке животного\n\n"
-                    + "/preparing - список рекомендаций  по обустройству дома для животного\n\n"
-                    + "/cynologist - советы кинолога по первичному общению с собакой\n\n"
-                    + "/refuse - список причин, почему могут отказать и не дать забрать собаку из приюта\n\n"
-                    + "/register - отправить контактные данные\n\n"
-                    + "/volunteer - позвать волонтера\n\n"
-                    + "/choice - вернуться к выбору приюта";
-
-    private final String ADOPT_TEXT_CAT =
-            "В разделе о нас вы можете больше о нашем приюте:\n\n"
-                    + "/meet - правила знакомства с животным до того, как забрать его из приюта\n\n"
-                    + "/docs - список документов, необходимых для того, чтобы взять животное из приюта\n\n"
-                    + "/transport - список рекомендаций по транспортировке животного\n\n"
-                    + "/preparing - список рекомендаций  по обустройству дома для животного\n\n"
-                    + "/register - отправить контактные данные\n\n"
-                    + "/volunteer - позвать волонтера\n\n"
-                    + "/choice - вернуться к выбору приюта";
-    private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!";
 
     /**
      * Вывод приветственного сообщения с именем пользователя
@@ -77,15 +48,15 @@ public class TelegramMessageService {
      */
     public void aboutUsCommandReceived(long chatId) {
         log.debug("method aboutUsCommandReceived started");
-        sendMessage(chatId, ABOUT_US_TEXT);
+        sendMessage(chatId, ABOUT_US_TEXT.getMessage());
     }
 
     public void adoptCommandReceived(long chatId) {
         log.debug("method adoptCommandReceived started");
         if(userService.getShelterType(chatId) == 1){
-            sendMessage(chatId, ADOPT_TEXT_DOG);
+            sendMessage(chatId, ADOPT_TEXT_DOG.getMessage());
         }else{
-            sendMessage(chatId, ADOPT_TEXT_CAT);
+            sendMessage(chatId, ADOPT_TEXT_CAT.getMessage());
         }
     }
 
@@ -100,17 +71,27 @@ public class TelegramMessageService {
     public void registerCommandReceived(long chatId) {
         log.debug("method registerCommandReceived started");
         userService.setUser(chatId, true);
-        sendMessage(chatId, "Введите ваш номер телефона");
+        SendMessage message = new SendMessage(chatId, "Введите ваш номер телефона")
+                .replyMarkup(new InlineKeyboardMarkup(
+                        new InlineKeyboardButton("отмена").callbackData("/cancel")));
+        telegramBot.execute(message);
     }
 
     public void registerVerify(long chatId, String message) {
+        log.debug("method registerVerify started");
         if(message.matches("^\\+\\d{11}$|^\\d{11}$")){
             userService.setUser(chatId, message.trim());
             userService.setUser(chatId, false);
             sendMessage(chatId, "Сохранено, скоро свяжемся");
         } else {
-            sendMessage(chatId, "неверный формат номера, попробуйте ещё раз");
+            sendMessage(chatId, "Неверный формат номера, попробуйте ещё раз");
         }
+    }
+
+    public void cancelCommandReceived(long chatId) {
+        log.debug("method cancelCommandReceived started");
+        userService.setUser(chatId, false);
+        sendMessage(chatId, "В другой раз");
     }
 
     /**
@@ -120,7 +101,7 @@ public class TelegramMessageService {
      */
     public void defaultCommandReceived(long chatId) {
         log.debug("method timeCommandReceived started");
-        sendMessage(chatId, DEFAULT_TEXT);
+        sendMessage(chatId, DEFAULT_TEXT.getMessage());
     }
 
     /**

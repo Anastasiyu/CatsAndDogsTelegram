@@ -123,6 +123,15 @@ public class TelegramUpdatesListener implements UpdatesListener {
                         telegramMessageService.defaultCommandReceived(chatId);
                 }
             }
+            if(update.callbackQuery() != null){
+                String data = update.callbackQuery().data();
+                long chatId = update.callbackQuery().message().chat().id();
+                switch(data){
+                    case "/cancel":
+                        telegramMessageService.cancelCommandReceived(chatId);
+                        break;
+                }
+            }
         });
         return com.pengrad.telegrambot.UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
