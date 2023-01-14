@@ -105,7 +105,7 @@ class VolunteerServiceTest {
         testVolunteer.setOnline(false);
         when(volunteerRepository.findByChatId(testVolunteer.getChatId())).thenReturn(Optional.of(testVolunteer));
 
-        volunteerService.onCommandReceived(testVolunteer.getChatId());
+        volunteerService.offCommandReceived(testVolunteer.getChatId());
         ArgumentCaptor<Volunteer> argumentCaptor = ArgumentCaptor.forClass(Volunteer.class);
         verify(volunteerRepository).save(argumentCaptor.capture());
         Volunteer actual = argumentCaptor.getValue();
