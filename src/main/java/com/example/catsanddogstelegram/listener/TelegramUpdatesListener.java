@@ -56,7 +56,7 @@ public class TelegramUpdatesListener implements UpdatesListener {
                 }
                 switch (message) {
                     case "/start":
-                        userService.saveUser(chatId, Timestamp.valueOf(LocalDateTime.now()), update.message().from().firstName());
+                        userService.createUser(chatId, Timestamp.valueOf(LocalDateTime.now()), update.message().from().firstName());
                         telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
                         break;
                     case "/dog":

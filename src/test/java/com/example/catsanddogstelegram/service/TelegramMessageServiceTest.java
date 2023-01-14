@@ -55,10 +55,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void ShelterCommandReceived() throws URISyntaxException, IOException {
+    void ShelterCommandReceivedTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/dog");
         telegramMessageService.ShelterCommandReceived(update.message().from().id());
 
@@ -75,10 +75,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void aboutUsCommandReceived() throws URISyntaxException, IOException {
+    void aboutUsCommandReceivedTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/aboutUs");
         telegramMessageService.aboutUsCommandReceived(update.message().from().id());
 
@@ -93,10 +93,10 @@ public class TelegramMessageServiceTest {
 
 
     @Test
-    void adoptCommandReceivedDog() throws URISyntaxException, IOException {
+    void adoptCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/adopt");
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
         telegramMessageService.adoptCommandReceived(update.message().from().id());
@@ -111,10 +111,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void adoptCommandReceivedCat() throws URISyntaxException, IOException {
+    void adoptCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/adopt");
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
         telegramMessageService.adoptCommandReceived(update.message().from().id());
@@ -129,10 +129,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void registerCommandReceived() throws URISyntaxException, IOException {
+    void registerCommandReceivedTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/register");
         telegramMessageService.registerCommandReceived(update.message().from().id());
 
@@ -146,10 +146,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void registerVerifyFalse() throws URISyntaxException, IOException {
+    void registerVerifyFalseTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "AAA122334");
                telegramMessageService.registerVerify(update.message().from().id(), update.message().text());
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -162,10 +162,10 @@ public class TelegramMessageServiceTest {
 
     }
     @Test
-    void registerVerifyTrue() throws URISyntaxException, IOException {
+    void registerVerifyTrueTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "+71112223344");
         telegramMessageService.registerVerify(update.message().from().id(), update.message().text());
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -179,10 +179,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void cancelCommandReceived()  throws URISyntaxException, IOException  {
+    void cancelCommandReceivedTest()  throws URISyntaxException, IOException  {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/cancel");
         telegramMessageService.cancelCommandReceived(update.message().from().id());
 
@@ -196,10 +196,10 @@ public class TelegramMessageServiceTest {
     }
 
     @Test
-    void defaultCommandReceived()  throws URISyntaxException, IOException {
+    void defaultCommandReceivedTest()  throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json, "/default");
         telegramMessageService.defaultCommandReceived(update.message().from().id());
 

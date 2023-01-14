@@ -28,6 +28,7 @@ public enum MenuTexts {
                     + "/register - отправить контактные данные\n\n"
                     + "/volunteer - позвать волонтера\n\n"
                     + "/choice - вернуться к выбору приюта"),
+    REPORT_TEXT(""),
     DEFAULT_TEXT ("Извините, данная команда не поддерживается!");
 
     private final String message;
