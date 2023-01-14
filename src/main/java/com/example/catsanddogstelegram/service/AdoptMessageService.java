@@ -32,18 +32,14 @@ public class AdoptMessageService {
     }
 
     /**
-     * Вывод константы {@link PreparingInfoDog#DOG_RULES_OF_DATING}, {@link PreparingInfoCat#CAT_RULES_OF_DATING}
-     * для ознакомления с правилами знакомства с животными в приюте.
+     * Вывод константы {@link PreparingInfoDog#LIST_OF_DOCUMENTS_TO_ADOPT}
+     * для ознакомления со списком документов чтобы взять питомца.
      * Для проверки приюта происходит обращение к {@link UserRepository#findShelterTypeByChatId(long)}
      * @param chatId идентификатор чата, из которого пришел update
      */
     public void docsCommandReceived(long chatId) {
         log.debug("method infoCommandReceived started");
-        if(userService.getShelterType(chatId) == 1){
-            sendMessage(chatId, PreparingInfoDog.DOG_RULES_OF_DATING.getTypeOfInfo());
-        }else{
-            sendMessage(chatId, PreparingInfoCat.CAT_RULES_OF_DATING.getTypeOfInfo());
-        }
+        sendMessage(chatId, PreparingInfoDog.LIST_OF_DOCUMENTS_TO_ADOPT.getTypeOfInfo());
     }
 
     /**
@@ -63,7 +59,11 @@ public class AdoptMessageService {
 
     /**
      * Вывод константы {@link PreparingInfoDog#PREPARING_HOUSE_FOR_A_PUPPY_DOG},
-     * {@link PreparingInfoCat#PREPARING_HOUSE_FOR_A_KITTY}
+     * {@link PreparingInfoCat#PREPARING_HOUSE_FOR_A_KITTY},
+     * {@link PreparingInfoDog#PREPARING_HOUSE_FOR_AN_ADULT_DOG},
+     * {@link PreparingInfoCat#PREPARING_HOUSE_FOR_AN_ADULT_CAT},
+     * {@link PreparingInfoDog#PREPARING_HOUSE_FOR_A_DISABLED_DOG},
+     * {@link PreparingInfoCat#PREPARING_HOUSE_FOR_A_DISABLED_CAT}
      * для ознакомления с правиломи обустройста места.
      * Для проверки приюта происходит обращение к {@link UserRepository#findShelterTypeByChatId(long)}
      * @param chatId идентификатор чата, из которого пришел update
