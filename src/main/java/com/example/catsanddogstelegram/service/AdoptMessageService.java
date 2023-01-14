@@ -18,7 +18,7 @@ public class AdoptMessageService {
 
     /**
      * Вывод константы {@link PreparingInfoDog#DOG_RULES_OF_DATING}, {@link PreparingInfoCat#CAT_RULES_OF_DATING}
-     * для ознакомления пользователя с возможными командами бота в разделе о нас.
+     * для ознакомления c правилам знакомства с животными в приюте.
      * Для проверки приюта происходит обращение к {@link UserRepository#findShelterTypeByChatId(long)}
      * @param chatId идентификатор чата, из которого пришел update
      */
