@@ -34,7 +34,6 @@ public class AdoptMessageService {
     /**
      * Вывод константы {@link PreparingInfoDog#LIST_OF_DOCUMENTS_TO_ADOPT}
      * для ознакомления со списком документов чтобы взять питомца.
-     * Для проверки приюта происходит обращение к {@link UserRepository#findShelterTypeByChatId(long)}
      * @param chatId идентификатор чата, из которого пришел update
      */
     public void docsCommandReceived(long chatId) {
