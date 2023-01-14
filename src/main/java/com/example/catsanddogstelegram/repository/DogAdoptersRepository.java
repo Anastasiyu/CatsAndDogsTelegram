@@ -1,9 +1,9 @@
 package com.example.catsanddogstelegram.repository;
 
-import com.example.catsanddogstelegram.entity.Cat;
+import com.example.catsanddogstelegram.entity.DogAdopter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CatRepository extends JpaRepository<Cat, Integer> {
+public interface DogAdoptersRepository extends JpaRepository<DogAdopter, Long> {
 }

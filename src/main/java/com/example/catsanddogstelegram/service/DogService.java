@@ -21,17 +21,17 @@ public class DogService {
         return dogRepository.save(dog);
     }
 
-    public Dog read(long animalId) {
+    public Dog read(int animalId) {
         log.info("method read started");
         return dogRepository.findById(animalId).orElseThrow(() -> new DogNotFoundException(animalId));
     }
 
-    public Dog update(long animalId, Dog dog) {
+    public Dog update(int animalId, Dog dog) {
         log.info("method update started");
         return dogRepository.save(dog);
     }
 
-    public void delete(long animalId) {
+    public void delete(int animalId) {
         log.info("method delete started");
         dogRepository.deleteById(animalId);
     }

@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.Objects;
 
 /**Класс пользователисо свойствами <b>chatId</b>, <b>userTime</b>,
  *  <b>userName</b>, <b>userAge</b>
@@ -41,6 +41,19 @@ public class User {
 //    /**Метод БД определяющий зависимость у одного пользователя много животных*/
 //    @OneToMany(mappedBy = "user")
 //    private Collection<Animal> animals;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(chatId, user.chatId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chatId);
+    }
 
     @Override
     public String toString() {

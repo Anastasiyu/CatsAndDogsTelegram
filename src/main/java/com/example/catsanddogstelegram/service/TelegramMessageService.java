@@ -64,10 +64,6 @@ public class TelegramMessageService {
         log.debug("method reportCommandReceived started");
     }
 
-    public void volunteerCommandReceived(long chatId) {
-        log.debug("method volunteerCommandReceived started");
-    }
-
     public void registerCommandReceived(long chatId) {
         log.debug("method registerCommandReceived started");
         userService.setUser(chatId, true);
@@ -100,7 +96,7 @@ public class TelegramMessageService {
      * @param chatId идентификатор чата для определения ботом кому отвечать
      */
     public void defaultCommandReceived(long chatId) {
-        log.debug("method timeCommandReceived started");
+        log.debug("method defaultCommandReceived started");
         sendMessage(chatId, DEFAULT_TEXT.getMessage());
     }
 
