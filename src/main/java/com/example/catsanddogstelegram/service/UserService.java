@@ -21,14 +21,22 @@ public class UserService {
     }
 
     public List<User> findUserByName(String userName) {
-        log.info("method findUserByUserName started");
+        log.debug("method findUserByName started");
         if (userName.isBlank()) {
             throw new IllegalArgumentException();
         }
         return userRepository.findUserByUserName(userName);
     }
 
+    /**
+     * Сохранение в БД нового user при отправки им команды /start
+     * @param chatId - идентификатор чата из которого пришел update
+     * @param time - время первого сообщения пользователя
+     * @param name - имя пользователя
+     * @return сохраненный в БД user
+     */
     public User createUser(long chatId, Timestamp time, String name){
+        log.debug("method createUser started");
         User user = userRepository.findById(chatId).orElse(null);
         if(user == null) {
             user = new User();
@@ -40,22 +48,45 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Изменение выбранного пользователем номера приюта
+     * @param chatId - идентификатор чата из которого пришел update
+     * @param type - номер приюта
+     * @throws UserNotFoundException если пользователь не найден
+     * @return измененный номер приюта
+     */
     @CachePut(value = "shelter", key = "#chatId")
     public Integer setUser(long chatId, Integer type){
+        log.debug("method setUser started");
         User user = userRepository.findById(chatId).orElseThrow(UserNotFoundException::new);
         user.setType(type);
         userRepository.save(user);
         return type;
     }
 
+    /**
+     * Сохранение контакта пользователя
+     * @param chatId - идентификатор чата из которого пришел update
+     * @param number - сообщение пользователя с контактом
+     * @throws UserNotFoundException если пользователь не найден
+     */
     public void setUser(long chatId, String number){
+        log.debug("method setUser started");
         User user = userRepository.findById(chatId).orElseThrow(UserNotFoundException::new);
         user.setPhoneNumber(number);
         userRepository.save(user);
     }
 
+    /**
+     * Изменение статуса запроса в БД
+     * @param chatId - идентификатор чата из которого пришел update
+     * @param status - статус запроса для изменения
+     * @throws UserNotFoundException если пользователь не найден
+     * @return измененный статус
+     */
     @CachePut(value = "request", key = "#chatId")
     public boolean setUser(long chatId, boolean status){
+        log.debug("method setUser started");
         User user = userRepository.findById(chatId).orElseThrow(UserNotFoundException::new);
         user.setStatus(status);
         userRepository.save(user);
@@ -63,13 +94,27 @@ public class UserService {
         return status;
     }
 
+    /**
+     * Запрос номера приюта пользователя из БД
+     * @param chatId - идентификатор чата из которого пришел update
+     * @throws UserNotFoundException если пользователь не найден
+     * @return выбранный пользователем номер приюта
+     */
     @Cacheable("shelter")
     public int getShelterType(long chatId) {
-        return userRepository.findShelterTypeByChatId(chatId);
+        log.debug("method getShelterType started");
+        return userRepository.findShelterTypeByChatId(chatId).orElseThrow(UserNotFoundException::new);
     }
 
+    /**
+     * Запрос статуса запроса пользователя из БД
+     * @param chatId - идентификатор чата из которого пришел update
+     * @throws UserNotFoundException если пользователь не найден
+     * @return статус запроса пользователя
+     */
     @Cacheable("request")
     public boolean getRequestStatus(long chatId) {
-        return userRepository.findRequestStatus(chatId);
+        log.debug("method getShelterType started");
+        return userRepository.findRequestStatus(chatId).orElseThrow(UserNotFoundException::new);
     }
 }

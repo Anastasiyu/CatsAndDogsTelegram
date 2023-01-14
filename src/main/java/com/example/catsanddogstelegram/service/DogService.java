@@ -15,24 +15,49 @@ public class DogService {
         this.dogRepository = dogRepository;
     }
 
-    public Dog create(Dog dog) {
-        log.info("method create started");
-        dog.setAnimalId(null);
+    /**
+     * Сохранение новой сущности Cat в БД с заданными параметрами
+     * @param dog - сущность для сохранения
+     * @return сохраненная сущность
+     */
+    public Dog createDog(Dog dog) {
+        log.debug("method create started");
         return dogRepository.save(dog);
     }
 
-    public Dog read(int animalId) {
-        log.info("method read started");
+    /**
+     * Поиск сущности в БД по id
+     * @param animalId - идентификатор сущности в БД
+     * @return найденная в БД сущность
+     */
+    public Dog readDog(int animalId) {
+        log.debug("method read started");
         return dogRepository.findById(animalId).orElseThrow(() -> new DogNotFoundException(animalId));
     }
 
-    public Dog update(int animalId, Dog dog) {
-        log.info("method update started");
-        return dogRepository.save(dog);
+    /**
+     * Изменение существующей в БД сущности
+     * @param dog - сущность с изменениями
+     * @return измененная сущность
+     */
+    public Dog updateDog(Dog dog) {
+        log.debug("method updateDog started");
+        Dog toUpdate = readDog(dog.getAnimalId());
+        toUpdate.setIsMale(dog.getIsMale());
+        toUpdate.setAdopted(dog.isAdopted());
+        toUpdate.setDescription(dog.getDescription());
+        toUpdate.setAnimalAge(dog.getAnimalAge());
+        toUpdate.setRegisterDate(dog.getRegisterDate());
+        toUpdate.setAnimalName(dog.getAnimalName());
+        return dogRepository.save(toUpdate);
     }
 
-    public void delete(int animalId) {
-        log.info("method delete started");
+    /**
+     * Удаление сущности из БД по id
+     * @param animalId - идентификатор сущности в БД
+     */
+    public void deleteDog(int animalId) {
+        log.debug("method delete started");
         dogRepository.deleteById(animalId);
     }
 }
