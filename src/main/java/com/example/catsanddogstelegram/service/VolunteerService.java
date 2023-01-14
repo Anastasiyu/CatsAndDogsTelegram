@@ -26,6 +26,7 @@ public class VolunteerService {
      * @return созданный волонтер
      */
     public Volunteer createVolunteer(Volunteer volunteer) {
+
         return volunteerRepository.save(volunteer);
     }
 
