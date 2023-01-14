@@ -20,14 +20,31 @@ public class VolunteerService {
     private final VolunteerRepository volunteerRepository;
     private final TelegramBot telegramBot;
 
+    /**
+     * Сохранение волонтера с пришедшими параметрами в БД
+     * @param volunteer - сущность, которая будет сохранена в БД
+     * @return созданный волонтер
+     */
     public Volunteer createVolunteer(Volunteer volunteer) {
         return volunteerRepository.save(volunteer);
     }
 
+    /**
+     * Поиск волонтера в БД по id
+     * @throws UserNotFoundException если волонтер не найден
+     * @param id - идентификатор волонтера в БД
+     * @return найденый в БД волонтер
+     */
     public Volunteer readVolunteerById(int id) {
         return volunteerRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    /**
+     * Изменение существующего волонтера в БД по id
+     * @throws UserNotFoundException если волонтер не найден
+     * @param volunteer - сущность с изменениями
+     * @return измененный волонтер
+     */
     public Volunteer updateVolunteer(Volunteer volunteer) {
         Volunteer toUpdate = readVolunteerById(volunteer.getId());
         toUpdate.setName(volunteer.getName());
@@ -36,10 +53,22 @@ public class VolunteerService {
         return volunteerRepository.save(toUpdate);
     }
 
+    /**
+     * Удаление волонтера из БД по id, если такой существует
+     * @throws UserNotFoundException если волонтер не найден
+     * @param id - идентификатор волонтера в БД
+     */
     public void deleteVolunteer(int id) {
         volunteerRepository.delete(readVolunteerById(id));
     }
 
+    /**
+     * Обработка команды вызова волонтера пользователем.
+     * Отправление кнопки с ссылкой на пользователя, всем волонтером со статусом isOnline = true
+     * Поиск волонтеров в БД через {@link VolunteerRepository#findAllByOnline(boolean)}
+     * @param chatId - идентификатор чата из которого пришел update
+     * @param name - username пользователя
+     */
     public void volunteerCommandReceived(long chatId, String name) {
         log.debug("method volunteerCommandReceived started");
         List<Long> list = volunteerRepository.findAllByOnline(true);
@@ -57,6 +86,11 @@ public class VolunteerService {
         }
     }
 
+    /**
+     * Изменение статуса Online волонтера в БД на true
+     * @throws UserNotFoundException если волонтер не найден
+     * @param chatId - идентификатор чата из которого пришел update
+     */
     public void onCommandReceived(long chatId) {
         log.debug("method volunteerCommandReceived started");
         Volunteer volunteer = volunteerRepository.findByChatId(chatId).orElseThrow(UserNotFoundException::new);
@@ -64,6 +98,11 @@ public class VolunteerService {
         volunteerRepository.save(volunteer);
     }
 
+    /**
+     * Изменение статуса Online волонтера в БД на false
+     * @throws UserNotFoundException если волонтер не найден
+     * @param chatId - идентификатор чата из которого пришел update
+     */
     public void offCommandReceived(long chatId) {
         log.debug("method volunteerCommandReceived started");
         Volunteer volunteer = volunteerRepository.findByChatId(chatId).orElseThrow(UserNotFoundException::new);

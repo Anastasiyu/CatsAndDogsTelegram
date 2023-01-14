@@ -28,7 +28,7 @@ public class UserService {
         return userRepository.findUserByUserName(userName);
     }
 
-    public User saveUser(long chatId, Timestamp time, String name){
+    public User createUser(long chatId, Timestamp time, String name){
         User user = userRepository.findById(chatId).orElse(null);
         if(user == null) {
             user = new User();
@@ -67,6 +67,7 @@ public class UserService {
     public int getShelterType(long chatId) {
         return userRepository.findShelterTypeByChatId(chatId);
     }
+
     @Cacheable("request")
     public boolean getRequestStatus(long chatId) {
         return userRepository.findRequestStatus(chatId);
