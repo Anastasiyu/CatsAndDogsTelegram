@@ -95,13 +95,13 @@ public class TelegramMessageService {
     }
 
     /**
-     * Вывод константного меню ABOUT_US_TEXT для ознакомления user с возможными командами бота
-     * в разделе о нас.
+     * Проверка формата введенного пользователем сообщения с контактом.
+     * Валидный формат +ХХХХХХХХХХХ или ХХХХХХХХХХХ
      * @param chatId - идентификатор чата, из которого пришел update
      */
     public void registerVerify(long chatId, String message) {
         log.debug("method registerVerify started");
-        if(message.matches("^\\+\\d{11}$|^\\d{11}$")){
+        if(message.matches("^\\+?\\d{11}$")){
             userService.setUser(chatId, message.trim());
             userService.setUser(chatId, false);
             sendMessage(chatId, "Сохранено, скоро свяжемся");
