@@ -2,7 +2,6 @@ package com.example.catsanddogstelegram.service;
 
 import com.example.catsanddogstelegram.constants.CatShelterDescription;
 import com.example.catsanddogstelegram.constants.DogShelterDescription;
-import com.example.catsanddogstelegram.constants.MenuTexts;
 import com.pengrad.telegrambot.BotUtils;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -22,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class AboutUsMessageServiceTest {
@@ -40,8 +38,8 @@ class AboutUsMessageServiceTest {
     @Test
     void infoCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
         aboutUsMessageService.infoCommandReceived(update.message().from().id());
@@ -58,8 +56,8 @@ class AboutUsMessageServiceTest {
     @Test
     void infoCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
         aboutUsMessageService.infoCommandReceived(update.message().from().id());
@@ -76,8 +74,8 @@ class AboutUsMessageServiceTest {
     @Test
     void timeCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
         aboutUsMessageService.timeCommandReceived(update.message().from().id());
@@ -94,8 +92,8 @@ class AboutUsMessageServiceTest {
     @Test
     void timeCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
         aboutUsMessageService.timeCommandReceived(update.message().from().id());
@@ -112,8 +110,8 @@ class AboutUsMessageServiceTest {
     @Test
     void addressCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
         aboutUsMessageService.addressCommandReceived(update.message().from().id());
@@ -130,8 +128,8 @@ class AboutUsMessageServiceTest {
     @Test
     void addressCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
         aboutUsMessageService.addressCommandReceived(update.message().from().id());
@@ -148,8 +146,8 @@ class AboutUsMessageServiceTest {
     @Test
     void contactsCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
         aboutUsMessageService.contactsCommandReceived(update.message().from().id());
@@ -166,8 +164,8 @@ class AboutUsMessageServiceTest {
     @Test
     void contactsCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
         aboutUsMessageService.contactsCommandReceived(update.message().from().id());
@@ -184,8 +182,8 @@ class AboutUsMessageServiceTest {
     @Test
     void safetyCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
         aboutUsMessageService.safetyCommandReceived(update.message().from().id());
@@ -201,8 +199,8 @@ class AboutUsMessageServiceTest {
     @Test
     void safetyCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
-                Paths.get(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json").toURI()));
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
         Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
         aboutUsMessageService.safetyCommandReceived(update.message().from().id());
