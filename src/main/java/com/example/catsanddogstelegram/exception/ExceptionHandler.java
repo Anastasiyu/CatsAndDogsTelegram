@@ -17,6 +17,12 @@ public class ExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format("Собака с animalId = %d  не найдена!", e.getId()));
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handlerFacultyNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Пользователь с не найден!");
+    }
 }
 
 
