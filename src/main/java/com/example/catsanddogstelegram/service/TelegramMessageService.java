@@ -125,8 +125,8 @@ public class TelegramMessageService {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);
         SendResponse response = telegramBot.execute(message);
-        if(!response.isOk()){
-           log.error("message was not send: {}", response.errorCode());
-        }
+//         if(!response.isOk()){
+//            log.error("message was not send: {}", response.errorCode());
+//        }
     }
 }
