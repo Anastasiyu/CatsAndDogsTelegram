@@ -1,132 +1,144 @@
 package com.example.catsanddogstelegram.service;
 
+import com.example.catsanddogstelegram.constants.MenuTexts;
+import com.example.catsanddogstelegram.repository.UserRepository;
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import static com.example.catsanddogstelegram.constants.MenuTexts.*;
 
 @Service
 @Slf4j
 @Data
 public class TelegramMessageService {
     private final TelegramBot telegramBot;
-    private final String HELP_TEXT_DOG =
-            "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
-                    + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
-                    + "Введите /start чтобы увидеть приветственное сообщение\n\n"
-                    + "Введите /time чтобы увидеть время работы приюта\n\n"
-                    + "Введите /addressDog чтобы увидеть адрес приюта\n\n"
-                    + "Введите /dog чтобы узнать как взять собаку из приюта\n\n"
-                    + "Введите /reportDog чтобы отправить отчет о жизни у вас питомца\n\n"
-                    + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
-                    + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /helpDog чтобы снова увидеть это сообщение";
-
-    private final String HELP_TEXT_CAT =
-            "Этот бот создан для ответов на популярные вопросы людей о том, что нужно знать и уметь, чтобы забрать животное из приюта.\n\n"
-                    + "Вы можете выполнять команды из главного меню слева или набрав команду:\n\n"
-                    + "Введите /start чтобы увидеть приветственное сообщение\n\n"
-                    + "Введите /time чтобы увидеть время работы приюта\n\n"
-                    + "Введите /addressCat чтобы увидеть адрес приюта\n\n"
-                    + "Введите /cat чтобы узнать как взять кошку из приюта\n\n"
-                    + "Введите /reportCat чтобы отправить отчет о жизни у вас питомца\n\n"
-                    + "Введите /volunteer если ни один из вариантов меню не подходит позвать волонтера\n\n"
-                    + "Введите /register чтобы зарегистрироваться\n\n"
-                    + "Введите /helpCat чтобы снова увидеть это сообщение";
-    private final String TIME_TEXT = "Время работы приюта: пн-пт с 8-00 до 19-00, сб-вс с 10-00 до 15-00 ";
-
-    private final String ADDRESS_TEXT_DOG = "Наш адрес: ул. Ленина, дом 123 ";
-    private final String ADDRESS_TEXT_CAT = "Наш адрес: ул. Комарова, дом 10 ";
-    private final String DEFAULT_TEXT = "Извините, данная команда не поддерживается!\nCписок команд /info";
-    private final String ERROR_TEXT = "Error occurred: ";
+    private final UserService userService;
 
     /**
      * Вывод приветственного сообщения с именем пользователя
-     *
      * @param chatId идентификатор чата для определения ботом кому отвечать
      * @param name   имя пользователя который бот берет из телеграмм чата
      */
-    //нужно написать приветственное сообщение с рассказом о себе
     public void startCommandReceived(long chatId, String name) {
         log.debug("method startCommandReceived started");
-        String answer = "Привет " + name + ", рад помочь Вам!";
+        String answer = "Привет " + name + ", рад помочь Вам!" +
+                " Для начала выберите приют к которому хотите обратиться.\n" +
+                "/dog - приют для собак\n" +
+                "/cat - приют для кошек";
         log.info("Ответил пользователю " + name);
         sendMessage(chatId, answer);
     }
 
     /**
-     * Вывод константного меню HELP_TEXT_DOG для ознакомления пользователя с возможными командами бота
-     * если хотят взять собаку
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * Вывод меню для ознакомления пользователя с разделами.
+     * @param chatId идентификатор чата, из которого пришел update
      */
-    public void helpCommandReceivedDog(long chatId) {
-        log.debug("method helpCommandReceived started");
-        sendMessage(chatId, HELP_TEXT_DOG);
-    }
-    /**
-     * Вывод константного меню HELP_TEXT_CAT для ознакомления пользователя с возможными командами бота
-     * если хотят взять собаку
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     */
-    public void helpCommandReceivedCat(long chatId) {
-        log.debug("method helpCommandReceived started");
-        sendMessage(chatId, HELP_TEXT_CAT);
+    public void ShelterCommandReceived(long chatId) {
+        log.debug("method ShelterCommandReceived started");
+        sendMessage(chatId, "/aboutUs - узнать больше о приюте\n" +
+                "/adopt - как взять питомца\n" +
+                "/report - отправить отчет\n" +
+                "/volunteer - позвать волонтера");
     }
 
     /**
-     * Вывод константного меню ADDRESS_TEXT_DOG для ознакомления пользователя с адресом приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * Вывод константы {@link MenuTexts#ABOUT_US_TEXT} для ознакомления пользователя с возможными командами бота
+     * в разделе о нас.
+     * @param chatId идентификатор чата, из которого пришел update
      */
-    public void addressCommandReceivedDog(long chatId) {
-        log.debug("method addressCommandReceived started");
-        sendMessage(chatId, ADDRESS_TEXT_DOG);
-    }
-    /**
-     * Вывод константного меню ADDRESS_TEXT_CAT для ознакомления пользователя с адресом приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
-     */
-    public void addressCommandReceivedCat(long chatId) {
-        log.debug("method addressCommandReceived started");
-        sendMessage(chatId, ADDRESS_TEXT_CAT);
+    public void aboutUsCommandReceived(long chatId) {
+        log.debug("method aboutUsCommandReceived started");
+        sendMessage(chatId, ABOUT_US_TEXT.getMessage());
     }
 
     /**
-     * Вывод константного меню TIME_TEXT для ознакомления пользователя с графиком работы приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * Вывод константы {@link MenuTexts#ADOPT_TEXT_DOG} или {@link MenuTexts#ADOPT_TEXT_CAT} в зависимости оттого,
+     * какой приют user выбрал для ознакомления user с возможными командами бота в разделе о нас.
+     * Для проверки приюта происходит обращение к {@link UserRepository#findShelterTypeByChatId(long)}
+     * @param chatId - идентификатор чата, из которого пришел update
      */
-    public void timeCommandReceived(long chatId) {
-        log.debug("method timeCommandReceived started");
-        sendMessage(chatId, TIME_TEXT);
+    public void adoptCommandReceived(long chatId) {
+        log.debug("method adoptCommandReceived started");
+        if(userService.getShelterType(chatId) == 1){
+            sendMessage(chatId, ADOPT_TEXT_DOG.getMessage());
+        }else{
+            sendMessage(chatId, ADOPT_TEXT_CAT.getMessage());
+        }
+    }
+
+    /**
+     * Вывод константы {@link MenuTexts#REPORT_TEXT} для ознакомления user с возможными командами бота
+     * в разделе "отчет".
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
+    public void reportCommandReceived(long chatId) {
+        log.debug("method reportCommandReceived started");
+    }
+
+    /**
+     * Открытие запроса принятия контакта user ботом.
+     * Сохранение статуса в БД
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
+    public void registerCommandReceived(long chatId) {
+        log.debug("method registerCommandReceived started");
+        userService.setUser(chatId, true);
+        SendMessage message = new SendMessage(chatId, "Введите ваш номер телефона")
+                .replyMarkup(new InlineKeyboardMarkup(
+                        new InlineKeyboardButton("отмена").callbackData("/cancel")));
+        telegramBot.execute(message);
+    }
+
+    /**
+     * Проверка формата введенного пользователем сообщения с контактом.
+     * Валидный формат +ХХХХХХХХХХХ или ХХХХХХХХХХХ
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
+    public void registerVerify(long chatId, String message) {
+        log.debug("method registerVerify started");
+        if(message.matches("^\\+?\\d{11}$")){
+            userService.setUser(chatId, message.trim());
+            userService.setUser(chatId, false);
+            sendMessage(chatId, "Сохранено, скоро свяжемся");
+        } else {
+            sendMessage(chatId, "Неверный формат номера, попробуйте ещё раз");
+        }
+    }
+
+    /**
+     * Обработка нажания кнопки отмены пользователем, закрытие статуса запроса принятия контакта от user.
+     * Сохранение статуса в БД
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
+    public void cancelCommandReceived(long chatId) {
+        log.debug("method cancelCommandReceived started");
+        userService.setUser(chatId, false);
+        sendMessage(chatId, "В другой раз");
     }
 
     /**
      * Вывод константного меню DEFAULT_TEXT при запросе несуществующей команды
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * @param chatId - идентификатор чата, из которого пришел update
      */
     public void defaultCommandReceived(long chatId) {
-        log.debug("method timeCommandReceived started");
-        sendMessage(chatId, DEFAULT_TEXT);
+        log.debug("method defaultCommandReceived started");
+        sendMessage(chatId, DEFAULT_TEXT.getMessage());
     }
 
     /**
      * Метод для отправки сообщений ботом
-     * метод создает новую строку и определяя по chatId отправляет сообщение пользователю
-     *
-     * @param chatId     идентификатор чата для определения ботом кому отвечать
-     * @param textToSend сформированный текст для отправки пользователю
+     * метод создает новую строку и определяя по chatId отправляет сообщение user
+     * @param chatId - идентификатор чата, из которого пришел update
+     * @param textToSend - сформированный текст для отправки пользователю
      */
     private void sendMessage(long chatId, String textToSend) {
         log.debug("method sendMessage started");
         SendMessage message = new SendMessage(chatId, textToSend);
-        SendResponse response = telegramBot.execute(message);
-//         if(!response.isOk()){
-//            log.error("message was not send: {}", response.errorCode());
-//        }
+        telegramBot.execute(message);
     }
 }

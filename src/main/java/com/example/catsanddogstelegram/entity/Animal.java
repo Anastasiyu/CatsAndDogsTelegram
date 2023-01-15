@@ -12,19 +12,19 @@ import java.util.Objects;
  * @version 1.0
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "animals")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
 public abstract class Animal {
 
      /**Поле идентификационный номер которое
      * присваивает номер животному в порядке их поступления в приют
      * не зависимо от дальнейшего наследника класса
-     * с помощью указанных аннотаций {@link @Id}  и {@link @GeneratedValue(strategy = GenerationType.IDENTITY)}
+     * с помощью указанных аннотаций {@link @Id}  и {@link @GeneratedValue(strategy = GenerationType.SEQUENCE)}
      * аннотация {@Column} указывает на название колонки параметра в БД
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "animal_seq")
+    @SequenceGenerator(name = "animal_seq", sequenceName = "animal_seq", allocationSize = 1)
     @Column(name = "animal_id")
     private Integer animalId;
 
@@ -47,11 +47,8 @@ public abstract class Animal {
     /** Поле описание животного */
     @Column(name = "description")
     private String description;
-
-    /**Метод БД определяющий зависимость много животных у одного пользователя*/
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "chat_id")
-    private User user;
+    @Column(name = "is_adopted")
+    private boolean isAdopted;
 
     @Override
     public boolean equals(Object o) {
@@ -68,14 +65,14 @@ public abstract class Animal {
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "animalId=" + animalId +
+        return this.getClass().toString() +
+                " {animalId=" + animalId +
                 ", registerDate=" + registerDate +
                 ", gender=" + isMale +
-                ", animalName='" + animalName + '\'' +
+                ", animalName='" + animalName +
                 ", animalAge=" + animalAge +
-                ", description='" + description + '\'' +
-                ", user=" + user +
-                '}';
+                ", description='" + description+
+//                ", user=" + user +
+                "}";
     }
 }

@@ -1,6 +1,7 @@
 package com.example.catsanddogstelegram.service;
 
-import com.example.catsanddogstelegram.constants.MenuTexts;
+import com.example.catsanddogstelegram.constants.CatShelterDescription;
+import com.example.catsanddogstelegram.constants.DogShelterDescription;
 import com.pengrad.telegrambot.BotUtils;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
@@ -20,8 +21,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+
 @ExtendWith(MockitoExtension.class)
-public class TelegramMessageServiceTest {
+class AboutUsMessageServiceTest {
+
     @Mock
     private TelegramBot telegramBot;
 
@@ -29,77 +32,17 @@ public class TelegramMessageServiceTest {
     private UserService userService;
 
     @InjectMocks
-    private TelegramMessageService telegramMessageService;
-
-    public TelegramMessageServiceTest() {
-    }
-
-    @Test
-    public void startCommandReceivedTest() throws URISyntaxException, IOException {
-        String json = Files.readString(
-                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/start");
-        telegramMessageService.startCommandReceived(update.message().from().id(), update.message().from().firstName());
-
-        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
-        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
-        SendMessage actual = argumentCaptor.getValue();
-
-        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
-        Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo("Привет " + update.message().from().firstName() + ", рад помочь Вам!" +
-                        " Для начала выберите приют к которому хотите обратиться.\n" +
-                        "/dog - приют для собак\n" +
-                        "/cat - приют для кошек");
-    }
-
-    @Test
-    void ShelterCommandReceivedTest() throws URISyntaxException, IOException {
-        String json = Files.readString(
-                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/dog");
-        telegramMessageService.ShelterCommandReceived(update.message().from().id());
-
-        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
-        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
-        SendMessage actual = argumentCaptor.getValue();
-
-        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
-        Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo("/aboutUs - узнать больше о приюте\n" +
-                        "/adopt - как взять питомца\n" +
-                        "/report - отправить отчет\n" +
-                        "/volunteer - позвать волонтера");
-    }
-
-    @Test
-    void aboutUsCommandReceivedTest() throws URISyntaxException, IOException {
-        String json = Files.readString(
-                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/aboutUs");
-        telegramMessageService.aboutUsCommandReceived(update.message().from().id());
-
-        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
-        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
-        SendMessage actual = argumentCaptor.getValue();
-
-        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
-        Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo(MenuTexts.ABOUT_US_TEXT.getMessage());
-    }
+    private AboutUsMessageService aboutUsMessageService;
 
 
     @Test
-    void adoptCommandReceivedDogTest() throws URISyntaxException, IOException {
+    void infoCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/adopt");
+        Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
-        telegramMessageService.adoptCommandReceived(update.message().from().id());
+        aboutUsMessageService.infoCommandReceived(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -107,17 +50,17 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo(MenuTexts.ADOPT_TEXT_DOG.getMessage());
+                .isEqualTo(DogShelterDescription.INFO.getTypeOfInfoAboutShelter());
     }
 
     @Test
-    void adoptCommandReceivedCatTest() throws URISyntaxException, IOException {
+    void infoCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/adopt");
+        Update update = getUpdate(json);
         Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
-        telegramMessageService.adoptCommandReceived(update.message().from().id());
+        aboutUsMessageService.infoCommandReceived(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -125,16 +68,17 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo(MenuTexts.ADOPT_TEXT_CAT.getMessage());
+                .isEqualTo(CatShelterDescription.INFO.getTypeOfInfoAboutShelter());
     }
 
     @Test
-    void registerCommandReceivedTest() throws URISyntaxException, IOException {
+    void timeCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/register");
-        telegramMessageService.registerCommandReceived(update.message().from().id());
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
+        aboutUsMessageService.timeCommandReceived(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -142,49 +86,35 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo("Введите ваш номер телефона");
+                .isEqualTo(DogShelterDescription.OPENING_HOURS.getTypeOfInfoAboutShelter());
     }
 
     @Test
-    void registerVerifyFalseTest() throws URISyntaxException, IOException {
+    void timeCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "AAA122334");
-               telegramMessageService.registerVerify(update.message().from().id(), update.message().text());
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
+        aboutUsMessageService.timeCommandReceived(update.message().from().id());
+
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
         SendMessage actual = argumentCaptor.getValue();
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo("Неверный формат номера, попробуйте ещё раз");
-
-    }
-    @Test
-    void registerVerifyTrueTest() throws URISyntaxException, IOException {
-        String json = Files.readString(
-                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
-                        "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "+71112223344");
-        telegramMessageService.registerVerify(update.message().from().id(), update.message().text());
-        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
-        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
-        SendMessage actual = argumentCaptor.getValue();
-
-        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
-        Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo("Сохранено, скоро свяжемся");
-
+                .isEqualTo(CatShelterDescription.OPENING_HOURS.getTypeOfInfoAboutShelter());
     }
 
     @Test
-    void cancelCommandReceivedTest()  throws URISyntaxException, IOException  {
+    void addressCommandReceivedDogTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/cancel");
-        telegramMessageService.cancelCommandReceived(update.message().from().id());
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
+        aboutUsMessageService.addressCommandReceived(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -192,16 +122,17 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo("В другой раз");
+                .isEqualTo(DogShelterDescription.ADDRESS.getTypeOfInfoAboutShelter());
     }
 
     @Test
-    void defaultCommandReceivedTest()  throws URISyntaxException, IOException {
+    void addressCommandReceivedCatTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
                         "text_update_service.json")).toURI()));
-        Update update = getUpdate(json, "/default");
-        telegramMessageService.defaultCommandReceived(update.message().from().id());
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
+        aboutUsMessageService.addressCommandReceived(update.message().from().id());
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
@@ -209,10 +140,82 @@ public class TelegramMessageServiceTest {
 
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
         Assertions.assertThat(actual.getParameters().get("text"))
-                .isEqualTo(MenuTexts.DEFAULT_TEXT.getMessage());
+                .isEqualTo(CatShelterDescription.ADDRESS.getTypeOfInfoAboutShelter());
     }
 
-    private Update getUpdate(String json, String replaced) {
-        return BotUtils.fromJson(json.replace("%command%", replaced), Update.class);
+    @Test
+    void contactsCommandReceivedDogTest() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
+        aboutUsMessageService.contactsCommandReceived(update.message().from().id());
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
+        Assertions.assertThat(actual.getParameters().get("text"))
+                .isEqualTo(DogShelterDescription.CONTACTS.getTypeOfInfoAboutShelter());
     }
+
+    @Test
+    void contactsCommandReceivedCatTest() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
+        aboutUsMessageService.contactsCommandReceived(update.message().from().id());
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
+        Assertions.assertThat(actual.getParameters().get("text"))
+                .isEqualTo(CatShelterDescription.CONTACTS.getTypeOfInfoAboutShelter());
+    }
+
+    @Test
+    void safetyCommandReceivedDogTest() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(1);
+        aboutUsMessageService.safetyCommandReceived(update.message().from().id());
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
+        Assertions.assertThat(actual.getParameters().get("text"))
+                .isEqualTo(DogShelterDescription.SAFETY_MEASURES.getTypeOfInfoAboutShelter());
+    }
+    @Test
+    void safetyCommandReceivedCatTest() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(Objects.requireNonNull(TelegramMessageServiceTest.class.getResource("/com.example.catsanddogstelegram.service/" +
+                        "text_update_service.json")).toURI()));
+        Update update = getUpdate(json);
+        Mockito.when(userService.getShelterType(update.message().from().id())).thenReturn(2);
+        aboutUsMessageService.safetyCommandReceived(update.message().from().id());
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(167L);
+        Assertions.assertThat(actual.getParameters().get("text"))
+                .isEqualTo(CatShelterDescription.SAFETY_MEASURES.getTypeOfInfoAboutShelter());
+    }
+
+    private Update getUpdate(String json) {
+        return BotUtils.fromJson(json, Update.class);
+    }
+
 }
