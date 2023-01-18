@@ -5,16 +5,19 @@ import com.example.catsanddogstelegram.constants.PreparingInfoDog;
 import com.example.catsanddogstelegram.repository.UserRepository;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Data
 @Slf4j
 public class AdoptMessageService {
     private final TelegramBot telegramBot;
     private final UserService userService;
+
+    public AdoptMessageService(TelegramBot telegramBot, UserService userService) {
+        this.telegramBot = telegramBot;
+        this.userService = userService;
+    }
 
     /**
      * Вывод константы {@link PreparingInfoDog#DOG_RULES_OF_DATING}, {@link PreparingInfoCat#CAT_RULES_OF_DATING}

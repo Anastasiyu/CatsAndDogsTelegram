@@ -6,7 +6,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +13,14 @@ import static com.example.catsanddogstelegram.constants.MenuTexts.*;
 
 @Service
 @Slf4j
-@Data
 public class TelegramMessageService {
     private final TelegramBot telegramBot;
     private final UserService userService;
+
+    public TelegramMessageService(TelegramBot telegramBot, UserService userService) {
+        this.telegramBot = telegramBot;
+        this.userService = userService;
+    }
 
     /**
      * Вывод приветственного сообщения с именем пользователя
@@ -78,6 +81,10 @@ public class TelegramMessageService {
      */
     public void reportCommandReceived(long chatId) {
         log.debug("method reportCommandReceived started");
+        sendMessage(chatId, "Отчет должен содержать фото животного," +
+                " а так же информацию о его рационе," +
+                " общем самочувствии и привыкании к новому месту," +
+                " об изменениях в поведении (отказ от старых привычек, приобретение новых)");
     }
 
     /**

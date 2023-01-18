@@ -47,7 +47,6 @@ public class DogService {
         toUpdate.setAdopted(dog.isAdopted());
         toUpdate.setDescription(dog.getDescription());
         toUpdate.setAnimalAge(dog.getAnimalAge());
-        toUpdate.setRegisterDate(dog.getRegisterDate());
         toUpdate.setAnimalName(dog.getAnimalName());
         return dogRepository.save(toUpdate);
     }
@@ -58,7 +57,7 @@ public class DogService {
      */
     public void deleteDog(int animalId) {
         log.debug("method delete started");
-        dogRepository.deleteById(animalId);
+        dogRepository.delete(readDog(animalId));
     }
 }
 

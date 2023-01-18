@@ -47,7 +47,6 @@ public class CatService {
         toUpdate.setAdopted(cat.isAdopted());
         toUpdate.setDescription(cat.getDescription());
         toUpdate.setAnimalAge(cat.getAnimalAge());
-        toUpdate.setRegisterDate(cat.getRegisterDate());
         toUpdate.setAnimalName(cat.getAnimalName());
         return catRepository.save(toUpdate);
     }
@@ -58,6 +57,6 @@ public class CatService {
      */
     public void deleteCat(int animalId) {
         log.debug("method deleteCat started");
-        catRepository.deleteById(animalId);
+        catRepository.delete(readCat(animalId));
     }
 }
