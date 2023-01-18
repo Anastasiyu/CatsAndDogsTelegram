@@ -5,7 +5,6 @@ import com.example.catsanddogstelegram.entity.DogAdopter;
 import com.example.catsanddogstelegram.exception.UserNotFoundException;
 import com.example.catsanddogstelegram.record.DogAdopterRecord;
 import com.example.catsanddogstelegram.repository.DogAdoptersRepository;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,15 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Service
-@Data
 @Slf4j
 public class DogAdopterService {
     private final DogAdoptersRepository adoptersRepository;
     private final RecordMapper mapper;
+
+    public DogAdopterService(DogAdoptersRepository adoptersRepository, RecordMapper mapper) {
+        this.adoptersRepository = adoptersRepository;
+        this.mapper = mapper;
+    }
 
     public DogAdopterRecord createDogAdopter(DogAdopterRecord record){
         DogAdopter dogAdopter = mapper.toEntity(record);
@@ -40,6 +43,6 @@ public class DogAdopterService {
     }
 
     public void deleteDogAdopter(long chatId){
-        adoptersRepository.deleteById(chatId);
+        adoptersRepository.delete(mapper.toEntity(readDogAdopter(chatId)));
     }
 }

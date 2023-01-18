@@ -6,16 +6,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Data
+@RequestMapping("volunteer")
 public class VolunteerController {
     private final VolunteerService volunteerService;
+
+    public VolunteerController(VolunteerService volunteerService) {
+        this.volunteerService = volunteerService;
+    }
 
     @Operation(summary = "Занесение в базу данных волонтере",
             responses = {

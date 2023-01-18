@@ -7,18 +7,21 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Data
 @Slf4j
 public class VolunteerService {
     private final VolunteerRepository volunteerRepository;
     private final TelegramBot telegramBot;
+
+    public VolunteerService(VolunteerRepository volunteerRepository, TelegramBot telegramBot) {
+        this.volunteerRepository = volunteerRepository;
+        this.telegramBot = telegramBot;
+    }
 
     /**
      * Сохранение волонтера с пришедшими параметрами в БД

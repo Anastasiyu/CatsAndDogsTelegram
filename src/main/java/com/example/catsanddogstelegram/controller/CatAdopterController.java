@@ -2,16 +2,18 @@ package com.example.catsanddogstelegram.controller;
 
 import com.example.catsanddogstelegram.record.CatAdopterRecord;
 import com.example.catsanddogstelegram.service.CatAdopterService;
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("cat/adopter")
-@Data
 public class CatAdopterController {
     private final CatAdopterService adopterService;
+
+    public CatAdopterController(CatAdopterService adopterService) {
+        this.adopterService = adopterService;
+    }
 
     @PostMapping
     public ResponseEntity<CatAdopterRecord> createCatAdopter(@RequestBody CatAdopterRecord record){
