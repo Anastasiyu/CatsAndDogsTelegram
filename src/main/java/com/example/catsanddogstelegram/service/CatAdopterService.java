@@ -45,4 +45,12 @@ public class CatAdopterService {
     public void deleteCatAdopter(long chatId){
         adoptersRepository.delete(mapper.toEntity(readCatAdopter(chatId)));
     }
+
+    public boolean getRequestStatus(long chatId) {
+        return adoptersRepository.getRequestStatus(chatId);
+    }
+
+    public void setStatus(long chatId, boolean status) {
+        adoptersRepository.setStatus(chatId, status);
+    }
 }

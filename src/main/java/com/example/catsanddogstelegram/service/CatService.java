@@ -44,7 +44,6 @@ public class CatService {
         log.debug("method updateCat started");
         Cat toUpdate = readCat(cat.getAnimalId());
         toUpdate.setIsMale(cat.getIsMale());
-        toUpdate.setAdopted(cat.isAdopted());
         toUpdate.setDescription(cat.getDescription());
         toUpdate.setAnimalAge(cat.getAnimalAge());
         toUpdate.setAnimalName(cat.getAnimalName());
