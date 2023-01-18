@@ -118,3 +118,25 @@ ALTER TABLE cat_adopters ADD COLUMN animal_id INT REFERENCES cats(animal_id);
 --changeset chibiaSad:7
 DROP TABLE cat_avatars;
 DROP TABLE dog_avatars;
+
+--changeset chibiaSad:8
+ALTER TABLE dog_adopters ADD COLUMN report_request BOOLEAN DEFAULT false;
+
+ALTER TABLE cat_adopters ADD COLUMN report_request BOOLEAN DEFAULT false;
+
+--changeset chibiaSad:9
+CREATE TABLE cat_reports
+(
+    id              BIGSERIAL       PRIMARY KEY,
+    chat_id         BIGINT          NOT NULL REFERENCES cat_adopters (chat_id),
+    text            TEXT,
+    file_path       VARCHAR(100)
+);
+
+CREATE TABLE dog_reports
+(
+    id              BIGSERIAL       PRIMARY KEY,
+    chat_id         BIGINT          NOT NULL REFERENCES dog_adopters (chat_id),
+    text            TEXT,
+    file_path       VARCHAR(100)
+)

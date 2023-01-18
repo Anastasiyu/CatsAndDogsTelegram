@@ -45,4 +45,12 @@ public class DogAdopterService {
     public void deleteDogAdopter(long chatId){
         adoptersRepository.delete(mapper.toEntity(readDogAdopter(chatId)));
     }
+
+    public boolean getRequestStatus(long chatId) {
+        return adoptersRepository.getRequestStatus(chatId);
+    }
+
+    public void setStatus(long chatId, boolean status) {
+        adoptersRepository.setStatus(chatId, status);
+    }
 }

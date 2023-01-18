@@ -44,7 +44,6 @@ public class DogService {
         log.debug("method updateDog started");
         Dog toUpdate = readDog(dog.getAnimalId());
         toUpdate.setIsMale(dog.getIsMale());
-        toUpdate.setAdopted(dog.isAdopted());
         toUpdate.setDescription(dog.getDescription());
         toUpdate.setAnimalAge(dog.getAnimalAge());
         toUpdate.setAnimalName(dog.getAnimalName());

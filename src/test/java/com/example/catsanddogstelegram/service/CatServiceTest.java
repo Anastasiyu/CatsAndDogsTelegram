@@ -35,7 +35,6 @@ class CatServiceTest {
         cat.setAnimalAge(2);
         cat.setIsMale(false);
         cat.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        cat.setAdopted(false);
 
         when(catRepository.save(cat)).thenReturn(cat);
         assertThat(catService.createCat(cat))
@@ -51,7 +50,6 @@ class CatServiceTest {
         cat.setAnimalAge(2);
         cat.setIsMale(false);
         cat.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        cat.setAdopted(false);
 
         when(catRepository.findById(cat.getAnimalId())).thenReturn(Optional.of(cat));
         assertThat(catService.readCat(1))
@@ -71,14 +69,12 @@ class CatServiceTest {
         cat.setAnimalAge(2);
         cat.setIsMale(false);
         cat.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        cat.setAdopted(false);
 
         Cat expected = new Cat();
         expected.setAnimalId(1);
         expected.setAnimalName("name");
         expected.setAnimalAge(3);
         expected.setIsMale(true);
-        expected.setAdopted(false);
 
         when(catRepository.findById(expected.getAnimalId())).thenReturn(Optional.of(cat));
         when(catRepository.save(cat)).thenReturn(cat);
@@ -99,7 +95,6 @@ class CatServiceTest {
         cat.setAnimalAge(2);
         cat.setIsMale(false);
         cat.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        cat.setAdopted(false);
 
         when(catRepository.findById(cat.getAnimalId())).thenReturn(Optional.of(cat));
         catService.deleteCat(cat.getAnimalId());

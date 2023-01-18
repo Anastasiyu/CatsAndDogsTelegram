@@ -48,6 +48,11 @@ public class UserService {
         return user;
     }
 
+    public User readUser(long chatId){
+        log.debug("method createUser started");
+        return userRepository.findById(chatId).orElse(null);
+    }
+
     /**
      * Изменение выбранного пользователем номера приюта
      * @param chatId - идентификатор чата из которого пришел update

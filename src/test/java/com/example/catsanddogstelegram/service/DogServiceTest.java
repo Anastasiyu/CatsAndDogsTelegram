@@ -36,7 +36,6 @@ class DogServiceTest {
         dog.setAnimalAge(2);
         dog.setIsMale(false);
         dog.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        dog.setAdopted(false);
 
         when(dogRepository.save(dog)).thenReturn(dog);
         assertThat(dogService.createDog(dog))
@@ -52,7 +51,6 @@ class DogServiceTest {
         dog.setAnimalAge(2);
         dog.setIsMale(false);
         dog.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        dog.setAdopted(false);
 
         when(dogRepository.findById(dog.getAnimalId())).thenReturn(Optional.of(dog));
         assertThat(dogService.readDog(1))
@@ -72,14 +70,12 @@ class DogServiceTest {
         dog.setAnimalAge(2);
         dog.setIsMale(false);
         dog.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        dog.setAdopted(false);
 
         Dog expected = new Dog();
         expected.setAnimalId(1);
         expected.setAnimalName("name");
         expected.setAnimalAge(3);
         expected.setIsMale(true);
-        expected.setAdopted(false);
 
         when(dogRepository.findById(expected.getAnimalId())).thenReturn(Optional.of(dog));
         when(dogRepository.save(dog)).thenReturn(dog);
@@ -100,7 +96,6 @@ class DogServiceTest {
         dog.setAnimalAge(2);
         dog.setIsMale(false);
         dog.setRegisterDate(Timestamp.valueOf(LocalDateTime.now()));
-        dog.setAdopted(false);
 
         when(dogRepository.findById(dog.getAnimalId())).thenReturn(Optional.of(dog));
         dogService.deleteDog(dog.getAnimalId());
