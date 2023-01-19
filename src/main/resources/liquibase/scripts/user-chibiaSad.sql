@@ -139,4 +139,13 @@ CREATE TABLE dog_reports
     chat_id         BIGINT          NOT NULL REFERENCES dog_adopters (chat_id),
     text            TEXT,
     file_path       VARCHAR(100)
-)
+);
+
+--changeset chibiaSad:10
+ALTER TABLE dog_adopters ADD COLUMN last_report DATE default current_date - 1;
+ALTER TABLE dog_adopters ADD COLUMN end_day DATE default current_date + 30;
+ALTER TABLE dog_adopters ADD COLUMN pass BOOLEAN default null;
+
+ALTER TABLE cat_adopters ADD COLUMN last_report DATE default current_date - 1;
+ALTER TABLE cat_adopters ADD COLUMN end_day DATE default current_date + 30;
+ALTER TABLE cat_adopters ADD COLUMN pass BOOLEAN default null;

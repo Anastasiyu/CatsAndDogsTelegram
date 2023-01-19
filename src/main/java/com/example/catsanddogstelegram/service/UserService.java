@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -18,14 +17,6 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public List<User> findUserByName(String userName) {
-        log.debug("method findUserByName started");
-        if (userName.isBlank()) {
-            throw new IllegalArgumentException();
-        }
-        return userRepository.findUserByUserName(userName);
     }
 
     /**

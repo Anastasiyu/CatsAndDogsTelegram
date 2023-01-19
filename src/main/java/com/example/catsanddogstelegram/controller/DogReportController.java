@@ -1,0 +1,59 @@
+package com.example.catsanddogstelegram.controller;
+
+import com.example.catsanddogstelegram.entity.DogReport;
+import com.example.catsanddogstelegram.service.DogReportService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("dog/report")
+public class DogReportController {
+    private final DogReportService reportService;
+
+    public DogReportController(DogReportService reportService) {
+        this.reportService = reportService;
+    }
+
+    @Operation(summary = "Поиск отчетов по дате",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "список отчетов по дате",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = DogReport.class))
+                            )
+                    )
+            }, tags = "Report"
+    )
+    @GetMapping()
+    public ResponseEntity<List<DogReport>> findAllByDate(@RequestParam String date) {
+        return ResponseEntity.ok(reportService.readAllByDay(date));
+    }
+
+    @Operation(summary = "Удаление отчетов по id усыновителя",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Удаленные отчеты",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = DogReport.class))
+                            )
+                    )
+            }, tags = "Report"
+    )
+    @DeleteMapping()
+    public ResponseEntity<List<DogReport>> deleteByChatId(@RequestParam long chatId) {
+        reportService.clear(chatId);
+        return ResponseEntity.ok().build();
+    }
+}
