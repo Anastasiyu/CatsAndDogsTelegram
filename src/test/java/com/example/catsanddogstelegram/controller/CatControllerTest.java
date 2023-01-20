@@ -59,8 +59,6 @@ class CatControllerTest {
                 .andExpect(jsonPath("$.animalName", Matchers.equalTo(tempCat.getAnimalName())))
                 .andExpect(jsonPath("$.animalAge", Matchers.equalTo(tempCat.getAnimalAge())))
                 .andExpect(jsonPath("$.description", Matchers.equalTo(tempCat.getDescription())));
-
-
     }
 
     @Test
