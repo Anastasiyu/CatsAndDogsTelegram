@@ -20,7 +20,7 @@ public class UserService {
     }
 
     /**
-     * Сохранение в БД нового user при отправки им команды /start
+     * Сохранение в БД нового user при отправки первого сообщения
      * @param chatId - идентификатор чата из которого пришел update
      * @param time - время первого сообщения пользователя
      * @param name - имя пользователя
@@ -39,6 +39,11 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Поиск в БД user по его chatId
+     * @param chatId - идентификатор чата из которого пришел update
+     * @return сохраненный в БД user
+     */
     public User readUser(long chatId){
         log.debug("method createUser started");
         return userRepository.findById(chatId).orElse(null);

@@ -113,6 +113,11 @@ public class TelegramMessageService {
                         " а так же информацию о его рационе," +
                         " общем самочувствии и привыкании к новому месту," +
                         " об изменениях в поведении (отказ от старых привычек, приобретение новых)");
+                SendMessage smg = new SendMessage(chatId, "Отправьте фотографию с прикрепленным к ней текстом")
+                        .replyMarkup(new InlineKeyboardMarkup(
+                                new InlineKeyboardButton("отмена")
+                                        .callbackData("report cancel")));
+                telegramBot.execute(smg);
                 catAdopterService.setStatus(chatId, true);
             }catch (UserNotFoundException e){
                 sendMessage(chatId, "у вас нет питомца");

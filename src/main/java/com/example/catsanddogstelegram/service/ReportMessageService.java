@@ -53,7 +53,13 @@ public class ReportMessageService {
         this.volunteerRepository = volunteerRepository;
     }
 
+    /**
+     * Обработка update при статусе запроса отчета true у усыновитя
+     * @param update изформация о сообщении
+     * @param chatId id чата из которого пришел update
+     */
     public void reportUpdateListener(Update update, long chatId) {
+        log.debug("method reportUpdateListener started");
         if (update.message().photo() == null || update.message().caption() == null) {
             SendMessage smg = new SendMessage(chatId, "Отправьте фотографию с прикрепленным к ней текстом")
                     .replyMarkup(new InlineKeyboardMarkup(
@@ -81,7 +87,15 @@ public class ReportMessageService {
         telegramBot.execute(smg);
     }
 
+    /**
+     * Сохранение присланного боту изображения на сервер
+     * @param fileId id изображения на сервере telegram
+     * @param dir директория для сохранения файлов
+     * @param chatId id чата из которого пришел update
+     * @return путь к файлу на сервере
+     */
     public String savePhoto(String fileId, String dir, long chatId) {
+        log.debug("method savePhoto started");
         GetFile getFile = new GetFile(fileId);
         String url = telegramBot.getFullFilePath(telegramBot.execute(getFile).file());
 
@@ -99,7 +113,12 @@ public class ReportMessageService {
         return path.toString();
     }
 
+    /**
+     * Установление статуса запроса отчета на false
+     * @param chatId id чата из которого пришел update
+     */
     public void cancelCommandReceived(long chatId) {
+        log.debug("method cancelCommandReceived started");
         if (userService.getShelterType(chatId) == 1) {
             dogAdopterService.setStatus(chatId, false);
         } else {
@@ -109,7 +128,12 @@ public class ReportMessageService {
         telegramBot.execute(smg);
     }
 
+    /**
+     * Отправка стандартного сообщения при некорректном заполнении отчета
+     * @param chatId id чата из которого пришел update
+     */
     public void sendDefaultMessage(long chatId) {
+        log.debug("method sendDefaultMessage started");
         SendMessage smg = new SendMessage(chatId,
                 "Дорогой усыновитель, мы заметили, что ты заполняешь отчет не так подробно, как необходимо." +
                         " Пожалуйста, подойди ответственнее к этому занятию. В противном случае" +
@@ -117,6 +141,10 @@ public class ReportMessageService {
         telegramBot.execute(smg);
     }
 
+    /**
+     * Запланированная проверка последнего времени отчета усыновителей.
+     * Проверка каждый день в 21:00 по времени сервера
+     */
     @Scheduled(cron = "0 0 21 * * *")
     public void checker(){
         log.info("scheduler started");

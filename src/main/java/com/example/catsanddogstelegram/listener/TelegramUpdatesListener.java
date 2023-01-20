@@ -53,9 +53,6 @@ public class TelegramUpdatesListener implements UpdatesListener {
                     userService.createUser(chatId, Timestamp.valueOf(LocalDateTime.now()),
                             update.message().from().firstName());
                 }
-                if(userService.getShelterType(chatId) == 0){
-                    telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
-                }
 
                 try{
                     dogAdopterService.readDogAdopter(chatId);
