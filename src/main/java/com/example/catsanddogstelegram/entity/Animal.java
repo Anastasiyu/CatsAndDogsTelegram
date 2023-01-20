@@ -31,7 +31,7 @@ public abstract class Animal {
     @Column(name = "register_date")
     private Timestamp registerDate;
 
-    /** Поле пол живатного */
+    /** Поле пол животного */
     @Column(name = "animal_gender")
     private Boolean isMale;
 
