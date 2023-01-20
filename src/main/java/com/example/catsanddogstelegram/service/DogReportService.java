@@ -20,7 +20,13 @@ public class DogReportService {
         this.dogReportRepository = dogReportRepository;
     }
 
+    /**
+     * Сохранение информации об отчете в БД
+     * @param report объект с информацией об отчете
+     * @return сохраненный отчет
+     */
     public DogReport create(DogReport report){
+        log.debug("was invoking method create");
         DogReport dogReport = dogReportRepository.findByFilePath(report.getFilePath()).orElse(null);
         if(dogReport == null){
             return dogReportRepository.save(report);
@@ -30,14 +36,31 @@ public class DogReportService {
         }
     }
 
+    /**
+     * Поиск отчетов в БД присланный в определённый день
+     * @param date дата для поиска
+     * @return список отчетов
+     */
     public List<DogReport> readAllByDay(String date){
+        log.debug("was invoking method readAllByDay");
         return dogReportRepository.findAllByFilePathContains(date);
     }
 
+    /**
+     * Удаление отчетов определенного усыновителя
+     * @param chatId id усыновителя
+     */
     public void clear(long chatId){
+        log.debug("was invoking method clear");
         dogReportRepository.deleteAllByChatId(chatId);
     }
 
+    /**
+     * Чтение файла изображения по пути из отчета в БД
+     * @param id id отчета
+     * @return массив байт изображения
+     * @throws IOException - не найден файл
+     */
     public byte[] readFromFile(long id) throws IOException {
         log.debug("was invoking method readFromFile");
         DogReport report = dogReportRepository.findById(id).orElseThrow(() -> {
