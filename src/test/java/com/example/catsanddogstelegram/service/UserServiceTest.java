@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,7 +75,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getShelterType() {
+    void getShelterTypeTest() {
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
         User user = new User();
         user.setUserName("Иван");
@@ -89,7 +90,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getRequestStatus() {
+    void getRequestStatusTest() {
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
         User user = new User();
         user.setUserName("Иван");
@@ -101,5 +102,17 @@ class UserServiceTest {
         when(userRepository.findRequestStatus(user.getChatId())).thenReturn(Optional.of(user.isStatus()));
 
         assertThat(userService.getRequestStatus(user.getChatId())).isEqualTo(false);
+    }
+
+    @Test
+    void readUserTest(){
+        User user = new User();
+
+        when(userRepository.findById(any(Long.class)))
+                .thenReturn(Optional.empty())
+                .thenReturn(Optional.of(user));
+
+        assertThat(userService.readUser(123L)).isEqualTo(null);
+        assertThat(userService.readUser(123L)).isEqualTo(user);
     }
 }
