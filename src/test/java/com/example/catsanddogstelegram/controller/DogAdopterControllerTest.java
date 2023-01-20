@@ -1,9 +1,9 @@
 package com.example.catsanddogstelegram.controller;
 
-import com.example.catsanddogstelegram.entity.CatAdopter;
-import com.example.catsanddogstelegram.record.CatAdopterRecord;
-import com.example.catsanddogstelegram.repository.CatAdoptersRepository;
-import com.example.catsanddogstelegram.service.CatAdopterService;
+import com.example.catsanddogstelegram.entity.DogAdopter;
+import com.example.catsanddogstelegram.record.DogAdopterRecord;
+import com.example.catsanddogstelegram.repository.DogAdoptersRepository;
+import com.example.catsanddogstelegram.service.DogAdopterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +26,24 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 
-@WebMvcTest(CatAdopterController.class)
-class CatAdopterControllerTest {
+@WebMvcTest(DogAdopterController.class)
+class DogAdopterControllerTest {
 
     @MockBean
-    private CatAdopterService adopterService;
+    private DogAdopterService adopterService;
 
     @MockBean
-    private CatAdoptersRepository catAdoptersRepository;
+    private DogAdoptersRepository adoptersRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
     private final static ObjectMapper mapper = new ObjectMapper();
 
+
     @Test
-    void createCatAdopterTest() throws Exception {
-        CatAdopterRecord record = new CatAdopterRecord();
+    void createDogAdopterTest() throws Exception {
+        DogAdopterRecord record = new DogAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
         record.setAge(35);
@@ -50,11 +51,12 @@ class CatAdopterControllerTest {
         record.setEmail("adopter@mail.ru");
         record.setProneNumber("+79111112233");
         record.setAddress("Тамбовская 23");
-        record.setCatId(123);
+        record.setDogId(123);
 
         String json = mapper.writeValueAsString(record);
-        when(adopterService.createCatAdopter(record)).thenReturn(record);
-        mockMvc.perform(post("/cat/adopter").contentType(MediaType.APPLICATION_JSON_VALUE).content(json)
+        when(adopterService.createDogAdopter(record)).thenReturn(record);
+
+        mockMvc.perform(post("/dog/adopter").contentType(MediaType.APPLICATION_JSON_VALUE).content(json)
                         .accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.chatId", Matchers.equalTo(167)))
                 .andExpect(jsonPath("$.name", Matchers.equalTo("Анатолий Петров")))
@@ -63,12 +65,12 @@ class CatAdopterControllerTest {
                 .andExpect(jsonPath("$.email", Matchers.equalTo("adopter@mail.ru")))
                 .andExpect(jsonPath("$.proneNumber", Matchers.equalTo("+79111112233")))
                 .andExpect(jsonPath("$.address", Matchers.equalTo("Тамбовская 23")))
-                .andExpect(jsonPath("$.catId", Matchers.equalTo(123)));
+                .andExpect(jsonPath("$.dogId", Matchers.equalTo(123)));
     }
 
     @Test
-    void readCatAdopterTest() throws Exception {
-        CatAdopterRecord record = new CatAdopterRecord();
+    void readDogAdopterTest() throws Exception {
+        DogAdopterRecord record = new DogAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
         record.setAge(35);
@@ -76,10 +78,11 @@ class CatAdopterControllerTest {
         record.setEmail("adopter@mail.ru");
         record.setProneNumber("+79111112233");
         record.setAddress("Тамбовская 23");
-        record.setCatId(123);
+        record.setDogId(123);
 
-        when(adopterService.readCatAdopter(record.getChatId())).thenReturn(record);
-        mockMvc.perform(MockMvcRequestBuilders.get("/cat/adopter/" + record.getChatId())
+        when(adopterService.readDogAdopter(record.getChatId())).thenReturn(record);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/dog/adopter/" + record.getChatId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.chatId", Matchers.equalTo(167)))
@@ -89,12 +92,12 @@ class CatAdopterControllerTest {
                 .andExpect(jsonPath("$.email", Matchers.equalTo("adopter@mail.ru")))
                 .andExpect(jsonPath("$.proneNumber", Matchers.equalTo("+79111112233")))
                 .andExpect(jsonPath("$.address", Matchers.equalTo("Тамбовская 23")))
-                .andExpect(jsonPath("$.catId", Matchers.equalTo(123)));
+                .andExpect(jsonPath("$.dogId", Matchers.equalTo(123)));
     }
 
     @Test
-    void updateCatAdopterTest() throws Exception {
-        CatAdopterRecord record = new CatAdopterRecord();
+    void updateDogAdopterTest() throws Exception {
+        DogAdopterRecord record = new DogAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
         record.setAge(35);
@@ -102,13 +105,13 @@ class CatAdopterControllerTest {
         record.setEmail("adopter@mail.ru");
         record.setProneNumber("+79111112233");
         record.setAddress("Тамбовская 23");
-        record.setCatId(123);
+        record.setDogId(123);
 
         String json = mapper.writeValueAsString(record);
 
-        when(adopterService.updateCatAdopter(record)).thenReturn(record);
+        when(adopterService.updateDogAdopter(record)).thenReturn(record);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -122,12 +125,12 @@ class CatAdopterControllerTest {
                 .andExpect(jsonPath("$.email", Matchers.equalTo("adopter@mail.ru")))
                 .andExpect(jsonPath("$.proneNumber", Matchers.equalTo("+79111112233")))
                 .andExpect(jsonPath("$.address", Matchers.equalTo("Тамбовская 23")))
-                .andExpect(jsonPath("$.catId", Matchers.equalTo(123)));
+                .andExpect(jsonPath("$.dogId", Matchers.equalTo(123)));
     }
 
     @Test
-    void setPassStatusFalseTest() throws Exception {
-        CatAdopterRecord record = new CatAdopterRecord();
+    void setPassStatusNotFoundTest() throws Exception {
+        DogAdopterRecord record = new DogAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
         record.setAge(35);
@@ -135,11 +138,11 @@ class CatAdopterControllerTest {
         record.setEmail("adopter@mail.ru");
         record.setProneNumber("+79111112233");
         record.setAddress("Тамбовская 23");
-        record.setCatId(123);
+        record.setDogId(123);
 
         String json = mapper.writeValueAsString(record);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter" + record.getChatId() + "/pass")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter" + record.getChatId() + "/pass")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -149,8 +152,7 @@ class CatAdopterControllerTest {
 
     @Test
     void addDaysToEndNotFoundTest() throws Exception {
-
-        CatAdopterRecord record = new CatAdopterRecord();
+        DogAdopterRecord record = new DogAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
         record.setAge(35);
@@ -158,12 +160,12 @@ class CatAdopterControllerTest {
         record.setEmail("adopter@mail.ru");
         record.setProneNumber("+79111112233");
         record.setAddress("Тамбовская 23");
-        record.setCatId(123);
+        record.setDogId(123);
 
-        doNothing().when(catAdoptersRepository).addDays(167, 15);
+        doNothing().when(adoptersRepository).addDays(167, 15);
 
         String json = mapper.writeValueAsString(record);
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter" + record.getChatId() + "/add")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter" + record.getChatId() + "/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
@@ -172,9 +174,8 @@ class CatAdopterControllerTest {
     }
 
     @Test
-    void deleteCatAdopterTest() throws Exception {
-
-        CatAdopterRecord record = new CatAdopterRecord();
+    void deleteDogAdopter() throws Exception {
+        DogAdopterRecord record = new DogAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
         record.setAge(35);
@@ -182,10 +183,9 @@ class CatAdopterControllerTest {
         record.setEmail("adopter@mail.ru");
         record.setProneNumber("+79111112233");
         record.setAddress("Тамбовская 23");
-        record.setCatId(123);
+        record.setDogId(123);
 
-
-        CatAdopter adopter = new CatAdopter();
+        DogAdopter adopter = new DogAdopter();
         adopter.setChatId(167L);
         adopter.setName("Анатолий Петров");
         adopter.setAge(35);
@@ -194,12 +194,11 @@ class CatAdopterControllerTest {
         adopter.setProneNumber("+79111112233");
         adopter.setAddress("Тамбовская 23");
 
-        when(catAdoptersRepository.findById(adopter.getChatId())).thenReturn(Optional.of(adopter));
+        when(adoptersRepository.findById(adopter.getChatId())).thenReturn(Optional.of(adopter));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/cat/adopter/" + record.getChatId())
+                        .delete("/dog/adopter/" + record.getChatId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
     }
 }
