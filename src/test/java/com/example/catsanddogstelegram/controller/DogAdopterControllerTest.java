@@ -142,12 +142,12 @@ class DogAdopterControllerTest {
 
         String json = mapper.writeValueAsString(record);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter" + record.getChatId() + "/pass")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter/" + record.getChatId() + "/pass?pass=true")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -162,15 +162,13 @@ class DogAdopterControllerTest {
         record.setAddress("Тамбовская 23");
         record.setDogId(123);
 
-        doNothing().when(adoptersRepository).addDays(167, 15);
-
         String json = mapper.writeValueAsString(record);
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter" + record.getChatId() + "/add")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/dog/adopter/" + record.getChatId() + "/add?days=15")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
     }
 
     @Test

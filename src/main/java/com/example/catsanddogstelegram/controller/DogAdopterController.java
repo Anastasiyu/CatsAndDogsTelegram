@@ -102,7 +102,7 @@ public class DogAdopterController {
                     )
             }, tags = "DogAdopter"
     )
-    @GetMapping("{id}/add")
+    @PutMapping("{id}/add")
     public ResponseEntity<DogAdopterRecord> addDaysToEnd(@PathVariable(name = "id") long chatId,
                                                          @RequestParam int days){
         adopterService.addDays(chatId, days);

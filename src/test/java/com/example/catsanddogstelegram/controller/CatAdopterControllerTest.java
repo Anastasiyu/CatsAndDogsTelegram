@@ -139,17 +139,16 @@ class CatAdopterControllerTest {
 
         String json = mapper.writeValueAsString(record);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter" + record.getChatId() + "/pass")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter/" + record.getChatId() + "/pass?pass=false")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
     }
 
     @Test
     void addDaysToEndNotFoundTest() throws Exception {
-
         CatAdopterRecord record = new CatAdopterRecord();
         record.setChatId(167L);
         record.setName("Анатолий Петров");
@@ -160,15 +159,13 @@ class CatAdopterControllerTest {
         record.setAddress("Тамбовская 23");
         record.setCatId(123);
 
-        doNothing().when(catAdoptersRepository).addDays(167, 15);
-
         String json = mapper.writeValueAsString(record);
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter" + record.getChatId() + "/add")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/cat/adopter/" + record.getChatId() + "/add?days=15")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
     }
 
     @Test

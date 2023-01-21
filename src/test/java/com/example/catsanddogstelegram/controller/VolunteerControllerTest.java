@@ -88,7 +88,7 @@ class VolunteerControllerTest {
 
        doNothing().when(reportMessageService).sendDefaultMessage(tempVolunteer.getChatId());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/volunteer/" + tempVolunteer.getId())
+        mockMvc.perform(MockMvcRequestBuilders.get("/volunteer?chatId=" + tempVolunteer.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk());
 
     }

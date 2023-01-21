@@ -1,6 +1,7 @@
 package com.example.catsanddogstelegram.service;
 
 import com.example.catsanddogstelegram.entity.CatReport;
+import com.example.catsanddogstelegram.exception.ReportNotFoundException;
 import com.example.catsanddogstelegram.repository.CatReportRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -64,5 +66,15 @@ class CatReportServiceTest {
         Long actual = argumentCaptor.getValue();
 
         assertThat(actual).isEqualTo(12345L);
+    }
+
+    @Test
+    void readFromFileTest() {
+        CatReport report = new CatReport();
+        report.setFilePath("path");
+        when(catReportRepository.findById(any()))
+                .thenThrow(ReportNotFoundException.class);
+
+        assertThatExceptionOfType(ReportNotFoundException.class).isThrownBy(() -> catReportService.readFromFile(123L));
     }
 }
