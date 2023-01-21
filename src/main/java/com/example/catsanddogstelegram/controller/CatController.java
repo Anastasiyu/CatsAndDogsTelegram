@@ -33,7 +33,7 @@ public class CatController {
     )
     @PostMapping
     public Cat create(@RequestBody Cat cat) {
-        return catService.create(cat);
+        return catService.createCat(cat);
     }
 
     @Operation(summary = "Поиск данных о кошке по id",
@@ -50,7 +50,7 @@ public class CatController {
     )
     @GetMapping("{id}")
     public ResponseEntity<Cat> read(@PathVariable(name = "id") int animalId) {
-        Cat cat = catService.read(animalId);
+        Cat cat = catService.readCat(animalId);
         return ResponseEntity.ok(cat);
     }
 
@@ -66,10 +66,9 @@ public class CatController {
                     )
             }, tags = "Cat"
     )
-    @PutMapping("{id}")
-    public ResponseEntity<Cat> update(@PathVariable(name = "id") int animalId,
-                                      @RequestBody Cat cat) {
-        Cat foundCat = catService.update(animalId, cat);
+    @PutMapping()
+    public ResponseEntity<Cat> update(@RequestBody Cat cat) {
+        Cat foundCat = catService.updateCat(cat);
         return ResponseEntity.ok(foundCat);
     }
 
@@ -87,7 +86,7 @@ public class CatController {
     )
     @DeleteMapping("{id}")
     public ResponseEntity<Cat> delete(@PathVariable(name = "id") int animalId) {
-        catService.delete(animalId);
+        catService.deleteCat(animalId);
         return ResponseEntity.ok().build();
     }
 }
