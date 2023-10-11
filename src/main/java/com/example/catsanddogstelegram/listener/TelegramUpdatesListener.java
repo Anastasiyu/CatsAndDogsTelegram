@@ -1,5 +1,6 @@
 package com.example.catsanddogstelegram.listener;
 
+import com.example.catsanddogstelegram.exception.UserNotFoundException;
 import com.example.catsanddogstelegram.service.*;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -21,8 +22,11 @@ public class TelegramUpdatesListener implements UpdatesListener {
     private final TelegramMessageService telegramMessageService;
     private final AboutUsMessageService aboutUsMessageService;
     private final AdoptMessageService adoptMessageService;
+    private final ReportMessageService reportMessageService;
     private final VolunteerService volunteerService;
     private final UserService userService;
+    private final CatAdopterService catAdopterService;
+    private final DogAdopterService dogAdopterService;
 
 
     @PostConstruct
@@ -44,19 +48,39 @@ public class TelegramUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             log.info("Processing update: {}", update);
             if (update.message() != null) {
-                if (update.message().text() == null || update.message().chat() == null) {
-                    log.debug("received message without any text or chat info: {}", update);
+                long chatId = update.message().chat().id();
+                if (userService.readUser(chatId) == null) {
+                    userService.createUser(chatId, Timestamp.valueOf(LocalDateTime.now()),
+                            update.message().from().firstName());
+                }
+
+                try{
+                    dogAdopterService.readDogAdopter(chatId);
+                    if (dogAdopterService.getRequestStatus(chatId)) {
+                        reportMessageService.reportUpdateListener(update, chatId);
+                        return;
+                    }
+                }catch (UserNotFoundException ignored){}
+                try{
+                    catAdopterService.readCatAdopter(chatId);
+                    if (catAdopterService.getRequestStatus(chatId)) {
+                        reportMessageService.reportUpdateListener(update, chatId);
+                        return;
+                    }
+                }catch (UserNotFoundException ignored){}
+
+                if (update.message().text() == null) {
+                    log.debug("received message without any text or photo info: {}", update);
                     return;
                 }
                 String message = update.message().text();
-                long chatId = update.message().chat().id();
-                if (!message.equals("/start") && userService.getRequestStatus(chatId)) {
+                if (userService.getRequestStatus(chatId)) {
                     telegramMessageService.registerVerify(chatId, message);
                     return;
                 }
+
                 switch (message) {
                     case "/start":
-                        userService.saveUser(chatId, Timestamp.valueOf(LocalDateTime.now()), update.message().from().firstName());
                         telegramMessageService.startCommandReceived(chatId, update.message().chat().firstName());
                         break;
                     case "/dog":
@@ -136,6 +160,9 @@ public class TelegramUpdatesListener implements UpdatesListener {
                 switch (data) {
                     case "/cancel":
                         telegramMessageService.cancelCommandReceived(chatId);
+                        break;
+                    case "report cancel":
+                        reportMessageService.cancelCommandReceived(chatId);
                         break;
                 }
             }

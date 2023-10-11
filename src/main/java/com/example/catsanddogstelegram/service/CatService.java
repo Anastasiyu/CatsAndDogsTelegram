@@ -15,24 +15,47 @@ public class CatService {
         this.catRepository = catRepository;
     }
 
-    public Cat create(Cat cat) {
-        log.info("method create started");
-        cat.setAnimalId(null);
+    /**
+     * Сохранение новой сущности Cat в БД с заданными параметрами
+     * @param cat - сущность для сохранения
+     * @return сохраненная сущность
+     */
+    public Cat createCat(Cat cat) {
+        log.debug("method createCat started");
         return catRepository.save(cat);
     }
 
-    public Cat read(int animalId) {
-        log.info("method read started");
+    /**
+     * Поиск сущности в БД по id
+     * @param animalId - идентификатор сущности в БД
+     * @return найденная в БД сущность
+     */
+    public Cat readCat(int animalId) {
+        log.debug("method readCat started");
         return catRepository.findById(animalId).orElseThrow(() -> new CatNotFoundException(animalId));
     }
 
-    public Cat update(int animalId, Cat cat) {
-        log.info("method update started");
-        return catRepository.save(cat);
+    /**
+     * Изменение существующей в БД сущности
+     * @param cat - сущность с изменениями
+     * @return измененная сущность
+     */
+    public Cat updateCat(Cat cat) {
+        log.debug("method updateCat started");
+        Cat toUpdate = readCat(cat.getAnimalId());
+        toUpdate.setIsMale(cat.getIsMale());
+        toUpdate.setDescription(cat.getDescription());
+        toUpdate.setAnimalAge(cat.getAnimalAge());
+        toUpdate.setAnimalName(cat.getAnimalName());
+        return catRepository.save(toUpdate);
     }
 
-    public void delete(int animalId) {
-        log.info("method delete started");
-        catRepository.deleteById(animalId);
+    /**
+     * Удаление сущности из БД по id
+     * @param animalId - идентификатор сущности в БД
+     */
+    public void deleteCat(int animalId) {
+        log.debug("method deleteCat started");
+        catRepository.delete(readCat(animalId));
     }
 }

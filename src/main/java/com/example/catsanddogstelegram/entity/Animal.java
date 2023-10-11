@@ -20,7 +20,6 @@ public abstract class Animal {
      * присваивает номер животному в порядке их поступления в приют
      * не зависимо от дальнейшего наследника класса
      * с помощью указанных аннотаций {@link @Id}  и {@link @GeneratedValue(strategy = GenerationType.SEQUENCE)}
-     * аннотация {@Column} указывает на название колонки параметра в БД
      */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "animal_seq")
@@ -32,7 +31,7 @@ public abstract class Animal {
     @Column(name = "register_date")
     private Timestamp registerDate;
 
-    /** Поле пол живатного */
+    /** Поле пол животного */
     @Column(name = "animal_gender")
     private Boolean isMale;
 
@@ -47,8 +46,6 @@ public abstract class Animal {
     /** Поле описание животного */
     @Column(name = "description")
     private String description;
-    @Column(name = "is_adopted")
-    private boolean isAdopted;
 
     @Override
     public boolean equals(Object o) {

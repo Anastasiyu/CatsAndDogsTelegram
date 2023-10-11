@@ -2,19 +2,29 @@ package com.example.catsanddogstelegram.service;
 
 import com.example.catsanddogstelegram.constants.CatShelterDescription;
 import com.example.catsanddogstelegram.constants.DogShelterDescription;
+import com.example.catsanddogstelegram.repository.UserRepository;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Data
 @Slf4j
 public class AboutUsMessageService {
     private final TelegramBot telegramBot;
     private final UserService userService;
 
+    public AboutUsMessageService(TelegramBot telegramBot, UserService userService) {
+        this.telegramBot = telegramBot;
+        this.userService = userService;
+    }
+
+    /**
+     * Вывод константы {@link DogShelterDescription#INFO}, {@link CatShelterDescription#INFO} для ознакомления
+     * пользователя с информацией о выбранном приюте
+     * Для проверки приюта происходит обращение к {@link UserRepository#findRequestStatus(long)}
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
     public void infoCommandReceived(long chatId) {
         log.debug("method infoCommandReceived started");
         if(userService.getShelterType(chatId) == 1){
@@ -25,9 +35,10 @@ public class AboutUsMessageService {
     }
 
     /**
-     * Вывод константного меню TIME_TEXT для ознакомления пользователя с графиком работы приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * Вывод константы {@link DogShelterDescription#OPENING_HOURS}, {@link CatShelterDescription#OPENING_HOURS}
+     * для ознакомления с графиком работы приюта
+     * Для проверки приюта происходит обращение к {@link UserRepository#findRequestStatus(long)}
+     * @param chatId - идентификатор чата, из которого пришел update
      */
     public void timeCommandReceived(long chatId) {
         log.debug("method timeCommandReceived started");
@@ -39,9 +50,10 @@ public class AboutUsMessageService {
     }
 
     /**
-     * Вывод константного меню ADDRESS_TEXT_DOG для ознакомления пользователя с адресом приюта
-     *
-     * @param chatId идентификатор чата для определения ботом кому отвечать
+     * Вывод константы {@link DogShelterDescription#ADDRESS}, {@link CatShelterDescription#ADDRESS} для ознакомления
+     * с адресом приюта
+     * Для проверки приюта происходит обращение к {@link UserRepository#findRequestStatus(long)}
+     * @param chatId - идентификатор чата, из которого пришел update
      */
     public void addressCommandReceived(long chatId) {
         log.debug("method addressCommandReceived started");
@@ -52,6 +64,12 @@ public class AboutUsMessageService {
         }
     }
 
+    /**
+     * Вывод константы {@link DogShelterDescription#CONTACTS}, {@link CatShelterDescription#CONTACTS} для ознакомления
+     * с контактами охраны приюта
+     * Для проверки приюта происходит обращение к {@link UserRepository#findRequestStatus(long)}
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
     public void contactsCommandReceived(long chatId) {
         log.debug("method contactsCommandReceived started");
         if(userService.getShelterType(chatId) == 1){
@@ -61,6 +79,12 @@ public class AboutUsMessageService {
         }
     }
 
+    /**
+     * Вывод константы {@link DogShelterDescription#SAFETY_MEASURES}, {@link CatShelterDescription#SAFETY_MEASURES}
+     * для ознакомления с правиломи безопасности приюта
+     * Для проверки приюта происходит обращение к {@link UserRepository#findRequestStatus(long)}
+     * @param chatId - идентификатор чата, из которого пришел update
+     */
     public void safetyCommandReceived(long chatId) {
         log.debug("method contactsCommandReceived started");
         if(userService.getShelterType(chatId) == 1){
